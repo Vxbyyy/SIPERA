@@ -1,0 +1,123 @@
+.register-page {
+  min-height: 100vh;
+  background: #FAFAFA;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+/* CARD (DIBESARKAN) */
+.register-card {
+  width: 100%;
+  max-width: 520px; /* lebih besar dari sebelumnya */
+  background: white;
+  padding: 45px 40px;
+  border-radius: 20px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+  position: relative; /* penting untuk back button */
+}
+
+/* 🔙 BACK ICON */
+.back-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #F3ECE7;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  color: #7F461B;
+}
+
+.back-btn:hover {
+  background: #E9DCD2;
+}
+
+/* TITLE */
+.register-card h2 {
+  text-align: center;
+  color: #7F461B;
+  margin-bottom: 8px;
+  font-size: 28px;
+}
+
+.register-card p {
+  text-align: center;
+  color: #666;
+  margin-bottom: 28px;
+  font-size: 15px;
+}
+
+/* FORM */
+.register-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.register-card input,
+.register-card textarea,
+.register-card select {
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  font-size: 15px;
+  font-family: Arial, sans-serif;
+  transition: 0.2s;
+}
+
+.register-card textarea {
+  resize: none;
+  height: 100px;
+}
+
+.register-card input:focus,
+.register-card textarea:focus,
+.register-card select:focus {
+  outline: none;
+  border-color: #7F461B;
+  box-shadow: 0 0 0 3px rgba(127, 70, 27, 0.1);
+}
+
+/* BUTTON */
+.register-card button[type="submit"] {
+  padding: 15px;
+  background: #7F461B;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 15px;
+  margin-top: 5px;
+}
+
+.register-card button[type="submit"]:hover {
+  background: #5C3213;
+}
+
+/* FOOTER */
+.register-footer {
+  margin-top: 25px;
+  font-size: 14px;
+  text-align: center;
+}
+
+/* LINK */
+.register-footer a {
+  color: #7F461B;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.register-footer a:hover {
+  color: #5C3213;
+}

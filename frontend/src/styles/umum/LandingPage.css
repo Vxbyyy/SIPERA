@@ -1,0 +1,170 @@
+.landing-page {
+  min-height: 100vh;
+  background: #FAFAFA;
+  font-family: Arial, sans-serif;
+  color: #2E2E2E;
+}
+
+.hero-banner {
+  height: 260px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+/* LOGIN BOX */
+.login-box {
+  position: absolute;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  width: 280px;
+  padding: 22px;
+  border-radius: 10px;
+  text-align: center;
+  border: 1px solid #E0E0E0;
+}
+
+.login-box h2 {
+  margin: 0;
+  color: #7F461B;
+  font-size: 22px;
+}
+
+.login-box p {
+  margin: 8px 0 18px;
+  font-size: 13px;
+  color: white;
+}
+
+/* BUTTON */
+.login-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+/* LOGIN & DAFTAR DEFAULT PUTIH */
+.login-actions a {
+  background: white;
+  color: #7F461B;
+  padding: 12px 26px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 700;
+  border: 1px solid #E0D2C8;
+  transition: 0.2s;
+}
+
+/* SAAT HOVER */
+.login-actions a:hover {
+  background: #F3ECE7;
+}
+
+/* SAAT DIKLIK */
+.login-actions a:active {
+  background: #7F461B;
+  color: white;
+}
+
+/* SECTION */
+.animal-section {
+  text-align: center;
+  padding: 30px 70px;
+}
+
+.animal-section h3 {
+  margin-bottom: 6px;
+  font-size: 20px;
+  color: #777;
+}
+
+.animal-section p {
+  color: #777;
+  font-size: 13px;
+  margin-bottom: 28px;
+}
+
+/* GRID */
+.animal-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 28px;
+}
+
+/* CARD */
+.animal-card img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* PRICE */
+.animal-price {
+  color: #7F461B;
+  font-weight: bold;
+}
+
+/* BUTTON ORDER */
+.order-button {
+  display: inline-block;
+  text-decoration: none;
+  background: #7F461B;
+  color: white;
+  padding: 8px 18px;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+.order-button:hover {
+  background: #5C3213;
+}
+
+/* INFO */
+.info-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 70px;
+  padding: 25px 140px 60px;
+}
+
+.info-card {
+  background: white;
+  border: 1px solid #E0E0E0;
+  border-radius: 8px;
+}
+
+.info-card h3 {
+  background: #7F461B;
+  color: white;
+  margin: 0;
+  padding: 10px 14px;
+}
+
+.info-card p,
+.info-card ul {
+  padding: 16px;
+  margin: 0;
+  text-align: justify;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .animal-section {
+    padding: 25px 20px;
+  }
+
+  .animal-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .info-section {
+    grid-template-columns: 1fr;
+    padding: 25px 20px;
+    gap: 25px;
+  }
+}
