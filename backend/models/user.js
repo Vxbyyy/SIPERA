@@ -19,7 +19,7 @@ const User = db.define("User", {
   },
 
   role: {
-    type: DataTypes.ENUM("pembeli", "penjual"),
+    type: DataTypes.ENUM("admin", "penjual", "pembeli"),
     allowNull: false,
   },
 
@@ -29,6 +29,12 @@ const User = db.define("User", {
 
   alamat: {
     type: DataTypes.TEXT,
+  },
+
+  status: {
+    type: DataTypes.ENUM("Aktif", "Ditangguhkan"),
+    allowNull: false,
+    defaultValue: "Aktif",
   },
 });
 

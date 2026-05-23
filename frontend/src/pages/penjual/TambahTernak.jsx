@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import api from "../../api/axiosConfig";
 import "../../styles/penjual/TambahTernak.css";
 
 function TambahTernak() {
@@ -17,6 +18,7 @@ function TambahTernak() {
 
   const [gambar, setGambar] = useState(null);
   const [preview, setPreview] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -34,23 +36,53 @@ function TambahTernak() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const dataTernak = {
-      ...formData,
-      gambar,
-    };
+    if (!gambar) {
+      alert("Silakan upload foto ternak terlebih dahulu.");
+      return;
+    }
 
-    console.log("Data ternak:", dataTernak);
-    alert("Data ternak berhasil ditambahkan!");
-    navigate("/penjual");
+    try {
+      setLoading(true);
+
+      const data = new FormData();
+
+      data.append("nama", formData.nama);
+      data.append("jenis", formData.jenis);
+      data.append("usia", formData.usia);
+      data.append("harga", formData.harga);
+      data.append("stok", formData.stok);
+      data.append("lokasi", formData.lokasi);
+      data.append("deskripsi", formData.deskripsi);
+      data.append("kondisi", "Sehat");
+      data.append("foto", gambar);
+
+      await api.post("/api/ternak", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      alert("Data ternak berhasil ditambahkan!");
+      navigate("/penjual");
+    } catch (error) {
+      console.error("Gagal menambahkan ternak:", error);
+
+      alert(
+        error.response?.data?.message ||
+          error.response?.data?.error ||
+          "Gagal menambahkan data ternak."
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="tambah-ternak-page">
       <div className="form-container">
-
         {/* HEADER FIX */}
         <div className="form-header">
           <button
@@ -63,9 +95,7 @@ function TambahTernak() {
 
           <div className="form-header-text">
             <h2>Tambah Data Ternak</h2>
-            <p>
-              Lengkapi informasi ternak yang ingin Anda jual di SIPERA.
-            </p>
+            <p>Lengkapi informasi ternak yang ingin Anda jual di SIPERA.</p>
           </div>
         </div>
 
@@ -165,9 +195,7 @@ function TambahTernak() {
 
             <div className="form-right">
               <label>Upload Foto Ternak</label>
-              <p>
-                Gunakan foto yang jelas agar pembeli mudah mengenali ternak.
-              </p>
+              <p>Gunakan foto yang jelas agar pembeli mudah mengenali ternak.</p>
 
               <input
                 type="file"
@@ -181,9 +209,7 @@ function TambahTernak() {
                   <img src={preview} alt="Preview ternak" />
                 </div>
               ) : (
-                <div className="preview-placeholder">
-                  Belum ada foto
-                </div>
+                <div className="preview-placeholder">Belum ada foto</div>
               )}
             </div>
           </div>
@@ -193,12 +219,13 @@ function TambahTernak() {
               type="button"
               className="cancel-btn"
               onClick={() => navigate("/penjual")}
+              disabled={loading}
             >
               Batal
             </button>
 
-            <button type="submit" className="submit-btn">
-              Simpan Ternak
+            <button type="submit" className="submit-btn" disabled={loading}>
+              {loading ? "Menyimpan..." : "Simpan Ternak"}
             </button>
           </div>
         </form>

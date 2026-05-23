@@ -1,129 +1,267 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, NavLink } from "react-router-dom";
+import axios from "axios";
 import "../../styles/pembeli/DashboardPembeli.css";
-
-import kerbauImg from "../../assets/kerbau.jpeg";
-import kambingImg from "../../assets/kambing.jpeg";
-import ayamImg from "../../assets/ayam.jpg";
 
 function DashboardPembeli() {
   const [search, setSearch] = useState("");
+  const [kategori, setKategori] = useState("Semua");
+  const [dataTernak, setDataTernak] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const dataTernak = [
-    {
-      id: 1,
-      nama: "Kerbau Toraja",
-      jenis: "Kerbau",
-      harga: "Rp 100.000.000",
-      usia: "6 Tahun",
-      stok: 3,
-      lokasi: "Toraja Utara",
-      penjual: "Pak Andi",
-      gambar: kerbauImg,
-    },
-    {
-      id: 2,
-      nama: "Kambing Etawa",
-      jenis: "Kambing",
-      harga: "Rp 6.000.000",
-      usia: "2 Tahun",
-      stok: 8,
-      lokasi: "Makale",
-      penjual: "Bu Sari",
-      gambar: kambingImg,
-    },
-    {
-      id: 3,
-      nama: "Ayam Kampung",
-      jenis: "Ayam",
-      harga: "Rp 150.000",
-      usia: "6 Bulan",
-      stok: 20,
-      lokasi: "Rantepao",
-      penjual: "Pak Joni",
-      gambar: ayamImg,
-    },
-  ];
+  const loggedInUser = JSON.parse(localStorage.getItem("user"));
 
-  const filteredTernak = dataTernak.filter((ternak) =>
-    ternak.nama.toLowerCase().includes(search.toLowerCase()) ||
-    ternak.jenis.toLowerCase().includes(search.toLowerCase())
-  );
+  const formatRupiah = (angka) => {
+    return new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: "IDR",
+      minimumFractionDigits: 0,
+    }).format(Number(angka || 0));
+  };
+
+  const getFotoTernak = (foto) => {
+    if (!foto) return null;
+
+    if (foto.startsWith("http")) {
+      return foto;
+    }
+
+    return `http://localhost:5000/uploads/${foto}`;
+  };
+
+  const fetchTernak = async () => {
+    try {
+      setLoading(true);
+
+      const response = await axios.get("http://localhost:5000/api/ternak");
+
+      setDataTernak(response.data);
+    } catch (error) {
+      console.error("Gagal mengambil data ternak:", error);
+      alert("Gagal mengambil data ternak dari database.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchTernak();
+  }, []);
+
+  const filteredTernak = dataTernak.filter((ternak) => {
+    const nama = ternak.nama || "";
+    const jenis = ternak.jenis || "";
+    const lokasi = ternak.lokasi || "";
+
+    const cocokSearch =
+      nama.toLowerCase().includes(search.toLowerCase()) ||
+      jenis.toLowerCase().includes(search.toLowerCase()) ||
+      lokasi.toLowerCase().includes(search.toLowerCase());
+
+    const cocokKategori = kategori === "Semua" || jenis === kategori;
+
+    return cocokSearch && cocokKategori;
+  });
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    localStorage.removeItem("role");
+    window.location.href = "/login";
+  };
 
   return (
     <div className="buyer-dashboard">
       <nav className="buyer-navbar">
-        <div className="buyer-brand">
-          <h2>SIPERA</h2>
-          <span>Marketplace Ternak Toraja</span>
+        <div className="buyer-logo">
+          <div className="buyer-logo-box">S</div>
+          <h2>
+            SIPERA <span>TORAJA</span>
+          </h2>
         </div>
 
-        <div className="buyer-nav-links">
+        <div className="buyer-nav-center">
+          <NavLink
+            to="/pembeli"
+            end
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
+            Beranda
+          </NavLink>
+
+          <NavLink
+            to="/pembeli/transaksi"
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
+            Transaksi
+          </NavLink>
+
+          <NavLink
+            to="/pembeli/chat"
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
+            Chat
+          </NavLink>
+
+          <NavLink
+            to="/pembeli/profil"
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
+            Profil
+          </NavLink>
+        </div>
+
+        <div className="buyer-user">
+          <div>
+            <strong>{loggedInUser?.nama || "Pembeli"}</strong>
+            <span>Buyer</span>
+          </div>
+
+          <button type="button" className="buyer-logout" onClick={handleLogout}>
+            ↪
+          </button>
+        </div>
+      </nav>
+
+      <main className="buyer-main">
+        <section className="buyer-header">
+          <div>
+            <h1>Pasar Ternak Toraja</h1>
+            <p>Temukan ternak terbaik untuk kebutuhan adat dan konsumsi Anda.</p>
+          </div>
+
+          <div className="buyer-tools">
+            <div className="search-box">
+              <span>⌕</span>
+              <input
+                type="text"
+                placeholder="Cari jenis kerbau/babi..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </div>
+
+            <div className="filter-tabs">
+              {["Semua", "Kerbau", "Babi", "Kambing", "Ayam", "Sapi"].map(
+                (item) => (
+                  <button
+                    key={item}
+                    type="button"
+                    className={kategori === item ? "active" : ""}
+                    onClick={() => setKategori(item)}
+                  >
+                    {item}
+                  </button>
+                )
+              )}
+            </div>
+          </div>
+        </section>
+
+        <section className="buyer-grid">
+          {loading ? (
+            <div className="buyer-empty">Memuat data ternak dari database...</div>
+          ) : filteredTernak.length > 0 ? (
+            filteredTernak.map((ternak) => {
+              const fotoUrl = getFotoTernak(ternak.foto);
+
+              return (
+                <div className="buyer-card" key={ternak.id}>
+                  {fotoUrl ? (
+                    <img src={fotoUrl} alt={ternak.nama} />
+                  ) : (
+                    <div className="buyer-card-img-placeholder">No Image</div>
+                  )}
+
+                  <div className="buyer-card-body">
+                    <span className="stock-badge">
+                      Stok {ternak.stok || 0}
+                    </span>
+
+                    <h3>{ternak.nama}</h3>
+
+                    <div className="meta">
+                      <span>⌖ {ternak.lokasi || "-"}</span>
+                      <span>⌑ {ternak.usia || "-"}</span>
+                    </div>
+
+                    <div className="buyer-info">
+                      <p>
+                        <strong>Jenis:</strong> {ternak.jenis || "-"}
+                      </p>
+                      <p>
+                        <strong>Kondisi:</strong> {ternak.kondisi || "-"}
+                      </p>
+                    </div>
+
+                    <div className="card-bottom">
+                      <p className="price">{formatRupiah(ternak.harga)}</p>
+
+                      <div className="card-actions">
+                        <Link
+                          to={`/pembeli/pesan/${ternak.id}`}
+                          className="detail-btn"
+                        >
+                          Pesan
+                        </Link>
+                        <Link
+                          to={`/pembeli/chat/${ternak.id}`}
+                          className="chat-btn"
+                        >
+                          Chat
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })
+          ) : (
+            <div className="buyer-empty">
+              Tidak ada data ternak yang sesuai dengan pencarian.
+            </div>
+          )}
+        </section>
+      </main>
+
+      <footer className="buyer-footer">
+        <div className="footer-brand">
+          <div className="buyer-logo">
+            <div className="buyer-logo-box">S</div>
+            <h2>
+              SIPERA <span>TORAJA</span>
+            </h2>
+          </div>
+          <p>
+            Sistem Informasi Penjualan Ternak Toraja. Menghubungkan peternak
+            lokal dengan pembeli secara transparan dan efisien.
+          </p>
+        </div>
+
+        <div>
+          <h3>Navigasi</h3>
           <Link to="/pembeli">Beranda</Link>
           <Link to="/pembeli/transaksi">Transaksi</Link>
           <Link to="/pembeli/chat">Chat</Link>
           <Link to="/pembeli/profil">Profil</Link>
         </div>
 
-        <Link to="/" className="buyer-logout">Logout</Link>
-      </nav>
-
-      <section className="buyer-hero">
         <div>
-          <span className="hero-label">Dashboard Pembeli</span>
-          <h1>Temukan Ternak Berkualitas</h1>
-          <p>Cari, bandingkan, dan pesan ternak langsung dari penjual terpercaya.</p>
-        </div>
-      </section>
-
-      <section className="search-section">
-        <input
-          type="text"
-          placeholder="Cari ternak: kerbau, kambing, ayam..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-
-        <button>Cari</button>
-      </section>
-
-      <section className="buyer-content">
-        <div className="section-title">
-          <h2>Daftar Ternak Tersedia</h2>
-          <p>Pilih ternak yang ingin Anda pesan atau hubungi penjual terlebih dahulu.</p>
+          <h3>Hubungi Kami</h3>
+          <p>+62 812 3456 7890</p>
+          <p>info@sipera-toraja.com</p>
+          <p>Toraja Utara, Sulawesi Selatan</p>
         </div>
 
-        <div className="buyer-grid">
-          {filteredTernak.map((ternak) => (
-            <div className="buyer-card" key={ternak.id}>
-              <img src={ternak.gambar} alt={ternak.nama} />
-
-              <div className="buyer-card-content">
-                <span className="stock-badge">Stok {ternak.stok}</span>
-                <h3>{ternak.nama}</h3>
-                <p className="price">{ternak.harga}</p>
-
-                <div className="buyer-info">
-                  <p><strong>Jenis:</strong> {ternak.jenis}</p>
-                  <p><strong>Usia:</strong> {ternak.usia}</p>
-                  <p><strong>Lokasi:</strong> {ternak.lokasi}</p>
-                  <p><strong>Penjual:</strong> {ternak.penjual}</p>
-                </div>
-
-                <div className="buyer-actions">
-                  <Link to={`/pembeli/pesan/${ternak.id}`} className="order-btn">
-                    Pesan
-                  </Link>
-
-                  <Link to={`/pembeli/chat/${ternak.id}`} className="chat-btn">
-                    Chat
-                  </Link>
-                </div>
-              </div>
-            </div>
-          ))}
+        <div>
+          <h3>Ikuti Kami</h3>
+          <div className="socials">
+            <span>f</span>
+            <span>◎</span>
+            <span>𝕏</span>
+          </div>
         </div>
-      </section>
+      </footer>
     </div>
   );
 }

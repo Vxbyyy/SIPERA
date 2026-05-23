@@ -1,6 +1,6 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const User = require("../models/User");
+const User = require("../models/user");
 
 exports.register = async (req, res) => {
   try {
@@ -74,9 +74,10 @@ exports.login = async (req, res) => {
     const token = jwt.sign(
       {
         id: user.id,
+        email: user.email,
         role: user.role,
       },
-      "SECRET_KEY_SIPERA",
+      process.env.JWT_SECRET,
       {
         expiresIn: "1d",
       }

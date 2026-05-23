@@ -1,254 +1,325 @@
-html,
-body,
-#root {
-  width: 100%;
-  margin: 0;
-  padding: 0;
-}
-
 .seller-dashboard {
-  width: 100%;
   min-height: 100vh;
-  background: #FAFAFA;
-  padding: 0;
-  box-sizing: border-box;
+  background: #fafafa;
   font-family: Arial, sans-serif;
+  color: #2e2e2e;
 }
 
-/* NAVBAR WEBSITE */
-.website-navbar {
-  height: 70px;
+/* NAVBAR */
+.seller-navbar {
+  height: 86px;
   background: white;
-  border-bottom: 1px solid #E0E0E0;
+  border-bottom: 1px solid #e8e8e8;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 60px;
+  padding: 0 42px;
   position: sticky;
   top: 0;
   z-index: 10;
 }
 
-.brand h2 {
-  margin: 0;
-  color: #7F461B;
+.seller-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.seller-logo-box {
+  width: 50px;
+  height: 50px;
+  background: #7f461b;
+  color: white;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
   font-size: 24px;
 }
 
-.brand span {
-  font-size: 12px;
-  color: #777;
-}
-
-.nav-links {
-  display: flex;
-  gap: 28px;
-}
-
-.nav-links a {
-  text-decoration: none;
-  color: #333;
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.nav-links a:hover {
-  color: #7F461B;
-}
-
-.logout-btn {
-  text-decoration: none;
-  background: #7F461B;
-  color: white;
-  padding: 9px 18px;
-  border-radius: 20px;
-  font-size: 14px;
-}
-
-.logout-btn:hover {
-  background: #5C3213;
-}
-
-/* HERO CLEAN */
-.seller-header {
-  margin: 28px 60px;
-  background: white;
-  color: #2E2E2E;
-  padding: 28px 32px;
-  border-radius: 18px;
-  border: 1px solid #E8E8E8;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-}
-
-.seller-header div {
-  border-left: 5px solid #7F461B;
-  padding-left: 18px;
-}
-
-.seller-header h1 {
-  margin: 0;
-  font-size: 30px;
-  color: #2E2E2E;
-}
-
-.seller-header p {
-  margin: 8px 0 0;
-  color: #777;
-  font-size: 15px;
-}
-
-.add-button {
-  background: #7F461B;
-  color: white;
-  padding: 12px 22px;
-  border-radius: 12px;
-  text-decoration: none;
-  font-weight: 700;
-  box-shadow: 0 6px 14px rgba(127, 70, 27, 0.2);
-}
-
-.add-button:hover {
-  background: #5C3213;
-}
-
-/* SECTION */
-.ternak-section {
-  margin: 0 60px 50px;
-}
-
-.section-title h2 {
-  color: #2E2E2E;
+.seller-logo h2 {
   margin: 0;
   font-size: 26px;
 }
 
-.section-title p {
-  color: #777;
-  margin: 6px 0 22px;
+.seller-logo h2 span {
+  color: #7f461b;
 }
 
-/* GRID MARKETPLACE */
-.ternak-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 22px;
+.seller-nav-links {
+  display: flex;
+  gap: 32px;
 }
 
-/* CARD MARKETPLACE */
-.ternak-card {
-  background: white;
-  border: 1px solid #E0E0E0;
-  border-radius: 14px;
-  overflow: hidden;
-  transition: 0.25s;
+.seller-nav-links a {
+  text-decoration: none;
+  color: #3d332d;
+  font-size: 18px;
+  font-weight: 600;
 }
 
-.ternak-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.1);
+.seller-nav-links a:hover {
+  color: #7f461b;
 }
 
-.ternak-card img {
-  width: 100%;
-  height: 190px;
-  object-fit: cover;
+.seller-user {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  border-left: 1px solid #e4ded8;
+  padding-left: 28px;
 }
 
-.ternak-content {
-  padding: 16px;
+.seller-user div {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
 }
 
-.ternak-content h3 {
-  margin: 0 0 8px;
-  color: #2E2E2E;
+.seller-user strong {
+  font-size: 16px;
+}
+
+.seller-user span {
+  color: #7f6d61;
+  font-size: 14px;
+}
+
+.seller-logout {
+  text-decoration: none;
+  color: #7f461b;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+/* MAIN */
+.seller-main {
+  padding: 60px 48px;
+}
+
+.seller-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 55px;
+}
+
+.seller-header h1 {
+  font-size: 44px;
+  margin-bottom: 10px;
+  color: #171312;
+}
+
+.seller-header p {
+  color: #7f6d61;
   font-size: 18px;
 }
 
-.ternak-content p {
-  margin: 5px 0;
-  font-size: 14px;
-  color: #555;
-}
-
-.ternak-content p strong {
-  color: #333;
-}
-
-.desc {
-  margin-top: 10px;
-  font-size: 13px;
-  color: #777;
-  line-height: 1.5;
-  text-align: justify;
-}
-
-.card-actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 14px;
-}
-
-.edit-btn,
-.delete-btn {
-  flex: 1;
-  text-align: center;
-  padding: 9px 12px;
-  border-radius: 8px;
-  font-size: 13px;
-}
-
-.edit-btn {
-  background: #7F461B;
+.add-button {
+  background: #7f461b;
   color: white;
   text-decoration: none;
+  padding: 18px 34px;
+  border-radius: 14px;
+  font-weight: 800;
+  font-size: 18px;
 }
 
-.edit-btn:hover {
-  background: #5C3213;
+.add-button:hover {
+  background: #5c3213;
 }
 
-.delete-btn {
-  background: #F3ECE7;
-  color: #7F461B;
+/* TABLE */
+.seller-table-card {
+  background: white;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid #ece7e2;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+.seller-table-card table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.seller-table-card thead {
+  background: #fbfaf9;
+}
+
+.seller-table-card th {
+  text-align: left;
+  padding: 24px 32px;
+  color: #6b5d55;
+  font-size: 15px;
+  text-transform: uppercase;
+}
+
+.seller-table-card td {
+  padding: 24px 32px;
+  border-top: 1px solid #eee8e3;
+  font-size: 17px;
+  vertical-align: middle;
+}
+
+.ternak-name {
+  font-weight: 800;
+  color: #111;
+}
+
+.price {
+  color: #7f461b;
+  font-weight: 800;
+}
+
+.status-badge {
+  background: #d9fbe8;
+  color: #0a8f3c;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 14px;
+  display: inline-block;
+}
+
+.aksi {
+  text-align: right !important;
+  white-space: nowrap;
+}
+
+.edit-icon,
+.delete-icon {
   border: none;
+  background: transparent;
+  text-decoration: none;
+  font-size: 22px;
   cursor: pointer;
+  margin-left: 18px;
+}
+
+.edit-icon {
+  color: #7f461b;
+}
+
+.delete-icon {
+  color: #c51f1f;
+}
+
+/* FOTO TERNAK */
+.ternak-photo {
+  width: 90px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid #e8e0da;
+  display: block;
+  background: #f3ece7;
+}
+
+.ternak-photo-placeholder {
+  width: 90px;
+  height: 70px;
+  border-radius: 12px;
+  background: #f3ece7;
+  color: #7f461b;
+  border: 1px dashed #c8b4a5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
   font-weight: 700;
 }
 
-.delete-btn:hover {
-  background: #E6D7CC;
+/* FOOTER */
+.seller-footer {
+  background: #171312;
+  color: white;
+  padding: 75px 46px 55px;
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1.4fr 1fr;
+  gap: 55px;
+}
+
+.seller-footer h3 {
+  color: white;
+  font-size: 24px;
+  margin-bottom: 28px;
+}
+
+.seller-footer p,
+.seller-footer a {
+  color: #d0c9c4;
+  line-height: 1.7;
+  font-size: 17px;
+  text-decoration: none;
+}
+
+.seller-footer a {
+  display: block;
+  margin-bottom: 14px;
+}
+
+.footer-brand p {
+  margin-top: 28px;
+  max-width: 380px;
+}
+
+.socials {
+  display: flex;
+  gap: 18px;
+}
+
+.socials span {
+  width: 50px;
+  height: 50px;
+  background: #29231f;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 22px;
 }
 
 /* RESPONSIVE */
-@media (max-width: 768px) {
-  .website-navbar {
-    padding: 16px 20px;
+@media (max-width: 900px) {
+  .seller-navbar {
     height: auto;
+    padding: 20px;
     flex-direction: column;
-    gap: 12px;
-  }
-
-  .nav-links {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 14px;
-  }
-
-  .seller-header {
-    margin: 20px;
-    flex-direction: column;
-    align-items: flex-start;
     gap: 18px;
   }
 
-  .seller-header h1 {
-    font-size: 26px;
+  .seller-nav-links {
+    flex-wrap: wrap;
+    justify-content: center;
   }
 
-  .ternak-section {
-    margin: 0 20px 40px;
+  .seller-user {
+    border-left: none;
+    padding-left: 0;
+  }
+
+  .seller-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 25px;
+  }
+
+  .seller-main {
+    padding: 35px 20px;
+  }
+
+  .seller-table-card {
+    overflow-x: auto;
+  }
+
+  .seller-table-card table {
+    min-width: 950px;
+  }
+
+  .seller-footer {
+    grid-template-columns: 1fr;
   }
 }

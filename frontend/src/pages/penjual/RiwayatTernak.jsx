@@ -1,46 +1,75 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "../../styles/penjual/RiwayatTernak.css";
-
-import kerbauImg from "../../assets/kerbau.jpeg";
-import kambingImg from "../../assets/kambing.jpeg";
 
 function RiwayatTernak() {
   const navigate = useNavigate();
-  const [selectedTernak, setSelectedTernak] = useState(null);
 
-  const riwayatTernak = [
-    {
-      id: 1,
-      nama: "Kerbau Toraja",
-      jenis: "Kerbau",
-      harga: "Rp 100.000.000",
-      usia: "6 Tahun",
-      kondisi: "Sehat",
-      stokAwal: 5,
-      stokTersisa: 2,
-      status: "Aktif",
-      tanggal: "12 April 2026",
-      lokasi: "Toraja Utara",
-      deskripsi: "Kerbau sehat untuk kebutuhan adat Toraja",
-      gambar: kerbauImg,
-    },
-    {
-      id: 2,
-      nama: "Kambing Etawa",
-      jenis: "Kambing",
-      harga: "Rp 6.000.000",
-      usia: "2 Tahun",
-      kondisi: "Sehat",
-      stokAwal: 8,
-      stokTersisa: 0,
-      status: "Terjual",
-      tanggal: "10 April 2026",
-      lokasi: "Makale",
-      deskripsi: "Kambing aktif dan siap dijual",
-      gambar: kambingImg,
-    },
-  ];
+  const [riwayatTernak, setRiwayatTernak] = useState([]);
+  const [selectedTernak, setSelectedTernak] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  const formatRupiah = (angka) => {
+    return new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: "IDR",
+      minimumFractionDigits: 0,
+    }).format(Number(angka || 0));
+  };
+
+  const formatTanggal = (tanggal) => {
+    if (!tanggal) return "-";
+
+    return new Date(tanggal).toLocaleDateString("id-ID", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    });
+  };
+
+  const getFotoTernak = (foto) => {
+    if (!foto) return null;
+
+    if (foto.startsWith("http")) {
+      return foto;
+    }
+
+    return `http://localhost:5000/uploads/${foto}`;
+  };
+
+  const getStatusTernak = (stok) => {
+    return Number(stok) > 0 ? "Aktif" : "Terjual";
+  };
+
+  const fetchRiwayatTernak = async () => {
+    try {
+      setLoading(true);
+
+      const response = await axios.get("http://localhost:5000/api/ternak");
+
+      setRiwayatTernak(response.data);
+    } catch (error) {
+      console.error("Gagal mengambil riwayat ternak:", error);
+      alert("Gagal mengambil data riwayat ternak dari database.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchRiwayatTernak();
+  }, []);
+
+  const totalTernak = riwayatTernak.length;
+
+  const totalAktif = riwayatTernak.filter(
+    (ternak) => getStatusTernak(ternak.stok) === "Aktif"
+  ).length;
+
+  const totalTerjual = riwayatTernak.filter(
+    (ternak) => getStatusTernak(ternak.stok) === "Terjual"
+  ).length;
 
   return (
     <div className="riwayat-page">
@@ -57,24 +86,26 @@ function RiwayatTernak() {
           <div className="riwayat-header-text">
             <span className="page-label">Riwayat Penjual</span>
             <h1>Riwayat Ternak</h1>
-            <p>Kelola dan pantau semua data ternak yang pernah Anda tambahkan.</p>
+            <p>
+              Kelola dan pantau semua data ternak yang pernah Anda tambahkan.
+            </p>
           </div>
         </div>
 
         <div className="summary">
           <div className="summary-card">
             <span>Total Ternak</span>
-            <h3>{riwayatTernak.length}</h3>
+            <h3>{totalTernak}</h3>
           </div>
 
           <div className="summary-card">
             <span>Ternak Aktif</span>
-            <h3>{riwayatTernak.filter((t) => t.status === "Aktif").length}</h3>
+            <h3>{totalAktif}</h3>
           </div>
 
           <div className="summary-card">
             <span>Terjual</span>
-            <h3>{riwayatTernak.filter((t) => t.status === "Terjual").length}</h3>
+            <h3>{totalTerjual}</h3>
           </div>
         </div>
 
@@ -85,42 +116,61 @@ function RiwayatTernak() {
           </div>
 
           <div className="history-list">
-            {riwayatTernak.map((item, index) => (
-              <div className="history-item" key={item.id}>
-                <div className="history-number">{index + 1}</div>
+            {loading ? (
+              <div className="empty-history">Memuat data riwayat ternak...</div>
+            ) : riwayatTernak.length > 0 ? (
+              riwayatTernak.map((item, index) => {
+                const fotoUrl = getFotoTernak(item.foto);
+                const status = getStatusTernak(item.stok);
 
-                <img src={item.gambar} alt={item.nama} className="history-img" />
+                return (
+                  <div className="history-item" key={item.id}>
+                    <div className="history-number">{index + 1}</div>
 
-                <div className="history-info">
-                  <h3>{item.nama}</h3>
-                  <p>{item.deskripsi}</p>
-                  <span>
-                    {item.jenis} • {item.tanggal}
-                  </span>
-                </div>
+                    {fotoUrl ? (
+                      <img
+                        src={fotoUrl}
+                        alt={item.nama}
+                        className="history-img"
+                      />
+                    ) : (
+                      <div className="history-img-placeholder">No Image</div>
+                    )}
 
-                <div className="history-price">
-                  <strong>{item.harga}</strong>
-                  <span>Stok: {item.stokTersisa}</span>
-                </div>
+                    <div className="history-info">
+                      <h3>{item.nama}</h3>
+                      <p>{item.deskripsi || "Belum ada deskripsi ternak."}</p>
+                      <span>
+                        {item.jenis} • {formatTanggal(item.createdAt)}
+                      </span>
+                    </div>
 
-                <span
-                  className={
-                    item.status === "Aktif" ? "badge aktif" : "badge terjual"
-                  }
-                >
-                  {item.status}
-                </span>
+                    <div className="history-price">
+                      <strong>{formatRupiah(item.harga)}</strong>
+                      <span>Stok: {item.stok || 0}</span>
+                    </div>
 
-                <button
-                  type="button"
-                  className="detail-btn"
-                  onClick={() => setSelectedTernak(item)}
-                >
-                  Detail
-                </button>
+                    <span
+                      className={status === "Aktif" ? "badge aktif" : "badge terjual"}
+                    >
+                      {status}
+                    </span>
+
+                    <button
+                      type="button"
+                      className="detail-btn"
+                      onClick={() => setSelectedTernak(item)}
+                    >
+                      Detail
+                    </button>
+                  </div>
+                );
+              })
+            ) : (
+              <div className="empty-history">
+                Belum ada data ternak yang tersimpan di database.
               </div>
-            ))}
+            )}
           </div>
         </div>
 
@@ -138,49 +188,72 @@ function RiwayatTernak() {
                 <i className="fas fa-times"></i>
               </button>
 
-              <img
-                src={selectedTernak.gambar}
-                alt={selectedTernak.nama}
-                className="detail-img"
-              />
+              {getFotoTernak(selectedTernak.foto) ? (
+                <img
+                  src={getFotoTernak(selectedTernak.foto)}
+                  alt={selectedTernak.nama}
+                  className="detail-img"
+                />
+              ) : (
+                <div className="detail-img-placeholder">No Image</div>
+              )}
 
               <div className="detail-content">
                 <span className="page-label">Detail Ternak</span>
                 <h2>{selectedTernak.nama}</h2>
-                <p className="detail-desc">{selectedTernak.deskripsi}</p>
+                <p className="detail-desc">
+                  {selectedTernak.deskripsi || "Belum ada deskripsi ternak."}
+                </p>
 
                 <div className="detail-info-grid">
                   <div>
                     <span>Jenis</span>
-                    <strong>{selectedTernak.jenis}</strong>
+                    <strong>{selectedTernak.jenis || "-"}</strong>
                   </div>
+
                   <div>
                     <span>Harga</span>
-                    <strong>{selectedTernak.harga}</strong>
+                    <strong>{formatRupiah(selectedTernak.harga)}</strong>
                   </div>
+
                   <div>
                     <span>Usia</span>
-                    <strong>{selectedTernak.usia}</strong>
+                    <strong>{selectedTernak.usia || "-"}</strong>
                   </div>
+
                   <div>
                     <span>Kondisi</span>
-                    <strong>{selectedTernak.kondisi}</strong>
+                    <strong>{selectedTernak.kondisi || "-"}</strong>
                   </div>
+
                   <div>
                     <span>Stok Awal</span>
-                    <strong>{selectedTernak.stokAwal}</strong>
+                    <strong>{selectedTernak.stok || 0}</strong>
                   </div>
+
                   <div>
                     <span>Stok Tersisa</span>
-                    <strong>{selectedTernak.stokTersisa}</strong>
+                    <strong>{selectedTernak.stok || 0}</strong>
                   </div>
+
                   <div>
                     <span>Status</span>
-                    <strong>{selectedTernak.status}</strong>
+                    <strong>{getStatusTernak(selectedTernak.stok)}</strong>
                   </div>
+
                   <div>
                     <span>Lokasi</span>
-                    <strong>{selectedTernak.lokasi}</strong>
+                    <strong>{selectedTernak.lokasi || "-"}</strong>
+                  </div>
+
+                  <div>
+                    <span>Tanggal Ditambahkan</span>
+                    <strong>{formatTanggal(selectedTernak.createdAt)}</strong>
+                  </div>
+
+                  <div>
+                    <span>ID Penjual</span>
+                    <strong>{selectedTernak.userId || "-"}</strong>
                   </div>
                 </div>
               </div>

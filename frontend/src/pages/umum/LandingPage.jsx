@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import "../../styles/umum/LandingPage.css";
 
 import kerbauImg from "../../assets/kerbau.jpeg";
@@ -37,64 +37,171 @@ function LandingPage() {
 
   return (
     <div className="landing-page">
-      <section
-        className="hero-banner"
-        style={{
-          backgroundImage: `url(${rumahImg})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
-        <div className="login-box">
-          <h2>SIPERA</h2>
-          <p>Sistem Informasi Penjualan Ternak</p>
-          <div className="login-actions">
-            <Link to="/login">Login</Link>
-            <Link to="/register">Daftar</Link>
+      
+      {/* ===== NAVBAR ===== */}
+      <header className="navbar">
+        <div className="logo">
+          <div className="logo-box">S</div>
+          <h2>
+            SIPERA <span>TORAJA</span>
+          </h2>
+        </div>
+
+        <nav>
+          <Link to="/" className="active">Beranda</Link>
+          <Link to="/login">Masuk</Link>
+          <Link to="/register" className="register-btn">
+          
+            Daftar
+          </Link>
+        </nav>
+      </header>
+
+      {/* ===== HERO ===== */}
+      <section className="hero-section">
+        <div className="hero-left">
+          <span className="badge">WARISAN BUDAYA TORAJA</span>
+
+          <h1>
+            Pasar Ternak <br />
+            <span>Terpercaya</span> <br />
+            untuk Acara Adat
+          </h1>
+
+          <p>
+            SIPERA adalah platform digital untuk jual beli ternak khas
+            Toraja seperti kerbau, babi, kambing, dan ayam untuk kebutuhan
+            acara adat maupun peternakan.
+          </p>
+
+          <div className="hero-buttons">
+            <Link to="/register" className="primary-btn">
+              Mulai Bergabung
+            </Link>
+
+            <Link to="/login" className="secondary-btn">
+              Lihat Katalog
+            </Link>
           </div>
+        </div>
+
+        <div className="hero-right">
+          <img src={rumahImg} alt="Hero SIPERA" />
         </div>
       </section>
 
+      {/* ===== STATISTIK ===== */}
+      <section className="stats-section">
+        <div className="stat-box">
+          <h2>500+</h2>
+          <p>Ternak Terjual</p>
+        </div>
+
+        <div className="stat-box">
+          <h2>120+</h2>
+          <p>Peternak Aktif</p>
+        </div>
+
+        <div className="stat-box">
+          <h2>15+</h2>
+          <p>Kecamatan Terjangkau</p>
+        </div>
+
+        <div className="stat-box">
+          <h2>4.9/5</h2>
+          <p>Kepuasan Pembeli</p>
+        </div>
+      </section>
+
+      {/* ===== DAFTAR TERNAK ===== */}
       <section className="animal-section">
-        <h3>Daftar Hewan Ternak</h3>
-        <p>Pembeli dapat melihat ternak dan harga sebelum melakukan pemesanan</p>
+        <div className="section-title">
+          <h2>Daftar Hewan Ternak</h2>
+          <p>
+            Pembeli dapat melihat daftar ternak dan harga sebelum melakukan
+            pemesanan.
+          </p>
+        </div>
 
         <div className="animal-grid">
           {daftarTernak.map((ternak) => (
             <div className="animal-card" key={ternak.id}>
               <img src={ternak.gambar} alt={ternak.nama} />
-              <h4>{ternak.nama}</h4>
-              <p className="animal-price">{ternak.harga}</p>
 
-              <Link to="/login" className="order-button">
-                Pesan
-              </Link>
+              <div className="animal-content">
+                <h3>{ternak.nama}</h3>
+                <p className="animal-price">{ternak.harga}</p>
+
+                <Link to="/login" className="order-button">
+                  Pesan Sekarang
+                </Link>
+              </div>
             </div>
           ))}
         </div>
       </section>
 
-      <section className="info-section">
-        <div className="info-card">
-          <h3>Selamat Datang di SIPERA</h3>
+{/* ===== INFO ===== */}
+<section className="info-section">
+
+  <div className="info-card">
+    <div className="info-icon">🐃</div>
+
+    <h3>Tentang SIPERA</h3>
+
+    <p>
+      SIPERA merupakan platform digital yang membantu masyarakat Toraja
+      dalam proses jual beli ternak secara lebih mudah, aman, dan
+      transparan untuk kebutuhan adat maupun peternakan.
+    </p>
+  </div>
+
+  <div className="info-card">
+    <div className="info-icon">📋</div>
+
+    <h3>Cara Pemesanan</h3>
+
+    <ul className="order-flow">
+      <li>Pilih ternak yang tersedia</li>
+      <li>Lihat detail dan harga ternak</li>
+      <li>Login atau registrasi akun</li>
+      <li>Lakukan pemesanan melalui dashboard</li>
+      <li>Penjual akan memproses transaksi</li>
+    </ul>
+  </div>
+
+</section>
+
+      {/* ===== FOOTER ===== */}
+      <footer className="footer">
+        <div className="footer-brand">
+          <h2>
+            SIPERA <span>TORAJA</span>
+          </h2>
+
           <p>
-            SIPERA membantu pembeli melihat daftar ternak, harga, dan informasi
-            awal sebelum melakukan pemesanan. Untuk memesan ternak, pembeli
-            harus registrasi dan login terlebih dahulu.
+            Sistem Informasi Penjualan Ternak Toraja yang membantu peternak
+            dan pembeli secara transparan dan efisien.
           </p>
         </div>
 
-        <div className="info-card">
-          <h3>Alur Pemesanan</h3>
-          <ul>
-            <li>Lihat daftar ternak dan harga</li>
-            <li>Klik tombol Pesan</li>
-            <li>Registrasi atau login sebagai pembeli</li>
-            <li>Masuk ke dashboard pembeli</li>
-            <li>Lakukan pemesanan ternak</li>
-          </ul>
+        <div className="footer-links">
+          <h3>Navigasi</h3>
+
+          <a href="/">Beranda</a>
+          <a href="/">Pasar Kerbau</a>
+          <a href="/">Pasar Babi</a>
+          <a href="/">Tentang Kami</a>
         </div>
-      </section>
+
+        <div className="footer-contact">
+          <h3>Hubungi Kami</h3>
+
+          <p>+62 812 3456 7890</p>
+          <p>info@sipera-toraja.com</p>
+          <p>Toraja Utara, Sulawesi Selatan</p>
+        </div>
+      </footer>
     </div>
   );
 }

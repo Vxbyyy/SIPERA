@@ -1,30 +1,134 @@
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 import "../../styles/umum/Login.css";
 
 function Login() {
   const navigate = useNavigate();
 
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    try {
+      const response = await axios.post("http://localhost:5000/api/auth/login", {
+        email: formData.email,
+        password: formData.password,
+      });
+
+      const { token, user } = response.data;
+
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("role", user.role);
+
+      if (user.role === "admin") {
+        navigate("/admin/dashboard");
+      } else if (user.role === "penjual") {
+        navigate("/penjual/dashboard");
+      } else if (user.role === "pembeli") {
+        navigate("/pembeli/dashboard");
+      } else {
+        setError("Role pengguna tidak dikenali.");
+      }
+    } catch (err) {
+      setError(
+        err.response?.data?.message || "Login gagal. Periksa email dan password."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="login-page">
-      <div className="login-card">
+      {/* HEADER */}
+      <header className="login-navbar">
+        <div className="logo">
+          <div className="logo-box">S</div>
+          <h2>
+            SIPERA <span>TORAJA</span>
+          </h2>
+        </div>
 
-        {/* 🔙 ICON BACK */}
-        <button className="back-btn" onClick={() => navigate(-1)}>
-          <i className="fas fa-arrow-left"></i>
-        </button>
+        <nav>
+          <Link to="/">Beranda</Link>
+          <Link to="/login" className="nav-login">Masuk</Link>
+          <Link to="/register" className="nav-register">
+            Daftar
+          </Link>
+        </nav>
+      </header>
 
-        <h2>Login SIPERA</h2>
-        <p>Masuk untuk melanjutkan ke akun Anda</p>
+      {/* LOGIN CARD */}
+      <div className="login-container">
+        <div className="login-card">
+          {/* TOP */}
+          <div className="login-top">
+            <h1>Selamat Datang</h1>
+            <p>Masuk ke akun SIPERA Anda</p>
+          </div>
 
-        <form>
-          <input type="email" placeholder="Email" />
-          <input type="password" placeholder="Password" />
-          <button type="submit">Login</button>
-        </form>
+          {/* FORM */}
+          <form className="login-form" onSubmit={handleLogin}>
+            {error && <p className="error-message">{error}</p>}
 
-        <p className="login-footer">
-          Belum punya akun? <Link to="/register">Daftar di sini</Link>
-        </p>
+            <div className="input-group">
+              <label>Email</label>
+              <div className="input-box">
+                <i className="fas fa-envelope"></i>
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="name@example.com"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="input-group">
+              <label>Password</label>
+              <div className="input-box">
+                <i className="fas fa-lock"></i>
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="••••••••"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
+
+            <button type="submit" className="login-btn" disabled={loading}>
+              {loading ? "Memproses..." : "Masuk Sekarang"}
+              <i className="fas fa-arrow-right"></i>
+            </button>
+          </form>
+
+          <p className="register-text">
+            Belum punya akun? <Link to="/register">Daftar sekarang</Link>
+          </p>
+        </div>
       </div>
     </div>
   );
