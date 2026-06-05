@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { NavLink, useNavigate } from "react-router-dom";
+import api from "../../api/axiosConfig";
 import "../../styles/penjual/RiwayatTernak.css";
 
 function RiwayatTernak() {
@@ -9,6 +9,8 @@ function RiwayatTernak() {
   const [riwayatTernak, setRiwayatTernak] = useState([]);
   const [selectedTernak, setSelectedTernak] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const loggedInUser = JSON.parse(localStorage.getItem("user"));
 
   const formatRupiah = (angka) => {
     return new Intl.NumberFormat("id-ID", {
@@ -46,15 +48,37 @@ function RiwayatTernak() {
     try {
       setLoading(true);
 
-      const response = await axios.get("http://localhost:5000/api/ternak");
+      const response = await api.get("/api/ternak");
 
-      setRiwayatTernak(response.data);
+      const semuaTernak = response.data || [];
+
+      const ternakPenjual = loggedInUser?.id
+        ? semuaTernak.filter(
+            (ternak) => Number(ternak.userId) === Number(loggedInUser.id)
+          )
+        : semuaTernak;
+
+      setRiwayatTernak(ternakPenjual);
     } catch (error) {
-      console.error("Gagal mengambil riwayat ternak:", error);
-      alert("Gagal mengambil data riwayat ternak dari database.");
+      console.error(
+        "Gagal mengambil riwayat ternak:",
+        error.response?.data || error.message
+      );
+
+      alert(
+        error.response?.data?.message ||
+          "Gagal mengambil data riwayat ternak dari database."
+      );
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    localStorage.removeItem("role");
+    navigate("/login");
   };
 
   useEffect(() => {
@@ -73,13 +97,63 @@ function RiwayatTernak() {
 
   return (
     <div className="riwayat-page">
-      <button
-        type="button"
-        className="back-floating"
-        onClick={() => navigate(-1)}
-      >
-        <i className="fas fa-arrow-left"></i>
-      </button>
+      <nav className="riwayat-navbar">
+        <div className="riwayat-logo">
+          <div className="riwayat-logo-box">S</div>
+          <h2>
+            SIPERA <span>TORAJA</span>
+          </h2>
+        </div>
+
+        <div className="riwayat-nav-links">
+          <NavLink
+            to="/penjual"
+            end
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
+            Beranda
+          </NavLink>
+
+          <NavLink
+            to="/penjual/riwayat-ternak"
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
+            Riwayat Ternak
+          </NavLink>
+
+          <NavLink
+            to="/penjual/pesanan"
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
+            Pesanan
+          </NavLink>
+
+          <NavLink
+            to="/penjual/chat"
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
+            Chat
+          </NavLink>
+
+          <NavLink
+            to="/penjual/profil"
+            className={({ isActive }) => (isActive ? "active" : "")}
+          >
+            Profil
+          </NavLink>
+        </div>
+
+        <div className="riwayat-user">
+          <div>
+            <strong>{loggedInUser?.nama || "Penjual"}</strong>
+            <span>Seller</span>
+          </div>
+
+          <button type="button" onClick={handleLogout}>
+            ↪
+          </button>
+        </div>
+      </nav>
 
       <div className="riwayat-container">
         <div className="riwayat-header">
@@ -151,7 +225,9 @@ function RiwayatTernak() {
                     </div>
 
                     <span
-                      className={status === "Aktif" ? "badge aktif" : "badge terjual"}
+                      className={
+                        status === "Aktif" ? "badge aktif" : "badge terjual"
+                      }
                     >
                       {status}
                     </span>
@@ -168,7 +244,7 @@ function RiwayatTernak() {
               })
             ) : (
               <div className="empty-history">
-                Belum ada data ternak yang tersimpan di database.
+                Belum ada data ternak milik Anda yang tersimpan di database.
               </div>
             )}
           </div>

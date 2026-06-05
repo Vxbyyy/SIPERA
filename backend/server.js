@@ -2,7 +2,7 @@ require("dotenv").config();
 const app = require("./app");
 const db = require("./config/database");
 
-db.sync()
+db.sync({ alter: true })
   .then(() => {
     console.log("Database connected");
   })

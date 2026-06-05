@@ -49,18 +49,24 @@
 
 .seller-nav-links {
   display: flex;
-  gap: 32px;
+  gap: 14px;
+  align-items: center;
 }
 
 .seller-nav-links a {
   text-decoration: none;
   color: #3d332d;
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 700;
+  padding: 12px 22px;
+  border-radius: 999px;
+  transition: 0.25s;
 }
 
-.seller-nav-links a:hover {
-  color: #7f461b;
+.seller-nav-links a:hover,
+.seller-nav-links a.active {
+  background: #7f461b;
+  color: white;
 }
 
 .seller-user {
@@ -282,6 +288,52 @@
   font-size: 22px;
 }
 
+/* ACTION ICON BUTTONS */
+.action-icon-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 28px;
+}
+
+.action-icon-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  border: none;
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  transition: 0.25s;
+}
+
+.edit-icon-btn {
+  background: #f3ece7;
+  color: #7f461b;
+  border: 1px solid #e0d2c8;
+}
+
+.edit-icon-btn:hover {
+  background: #7f461b;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.delete-icon-btn {
+  background: #fff0f0;
+  color: #c51f1f;
+  border: 1px solid #ffd0d0;
+}
+
+.delete-icon-btn:hover {
+  background: #c51f1f;
+  color: white;
+  transform: translateY(-2px);
+}
+
 /* RESPONSIVE */
 @media (max-width: 900px) {
   .seller-navbar {
@@ -321,5 +373,10 @@
 
   .seller-footer {
     grid-template-columns: 1fr;
+  }
+
+  .action-icon-wrapper {
+    justify-content: center;
+    gap: 22px;
   }
 }

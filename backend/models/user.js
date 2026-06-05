@@ -25,10 +25,27 @@ const User = db.define("User", {
 
   noTelepon: {
     type: DataTypes.STRING,
+    allowNull: true,
   },
 
   alamat: {
     type: DataTypes.TEXT,
+    allowNull: true,
+  },
+
+  namaBank: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+
+  nomorRekening: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+
+  namaPemilikRekening: {
+    type: DataTypes.STRING,
+    allowNull: true,
   },
 
   status: {

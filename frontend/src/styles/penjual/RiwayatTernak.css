@@ -4,42 +4,125 @@
   background: #fafafa;
   font-family: Arial, sans-serif;
   color: #2e2e2e;
-  padding: 35px 60px;
   box-sizing: border-box;
 }
 
-.riwayat-container {
-  max-width: 1200px;
-  margin: auto;
+/* NAVBAR RIWAYAT */
+.riwayat-navbar {
+  height: 86px;
+  background: white;
+  border-bottom: 1px solid #e8e8e8;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 42px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
-/* BACK FLOATING */
-.back-floating {
-  position: fixed;
-  top: 40px;
-  left: 30px;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: #f3ece7;
-  color: #7f461b;
-  border: 1px solid #e0d2c8;
+.riwayat-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.riwayat-logo-box {
+  width: 50px;
+  height: 50px;
+  background: #7f461b;
+  color: white;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  z-index: 1000;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
-  transition: 0.2s;
+  font-weight: 800;
+  font-size: 24px;
 }
 
-.back-floating:hover {
-  background: #e9dcd2;
-  transform: translateX(-3px);
+.riwayat-logo h2 {
+  margin: 0;
+  font-size: 26px;
+  color: #171312;
+}
+
+.riwayat-logo h2 span {
+  color: #7f461b;
+}
+
+.riwayat-nav-links {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.riwayat-nav-links a {
+  text-decoration: none;
+  color: #3d332d;
+  font-size: 18px;
+  font-weight: 700;
+  padding: 12px 22px;
+  border-radius: 999px;
+  transition: 0.25s;
+}
+
+.riwayat-nav-links a:hover,
+.riwayat-nav-links a.active {
+  background: #7f461b;
+  color: white;
+}
+
+.riwayat-user {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  border-left: 1px solid #e4ded8;
+  padding-left: 28px;
+}
+
+.riwayat-user div {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+}
+
+.riwayat-user strong {
+  font-size: 16px;
+  color: #171312;
+}
+
+.riwayat-user span {
+  color: #7f6d61;
+  font-size: 14px;
+}
+
+.riwayat-user button {
+  border: none;
+  background: transparent;
+  color: #7f461b;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* CONTAINER FULL WIDTH */
+.riwayat-container {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 60px 48px;
+  box-sizing: border-box;
+}
+
+/* BACK FLOATING - disembunyikan karena sudah ada navbar */
+.back-floating {
+  display: none;
 }
 
 /* HEADER */
 .riwayat-header {
+  width: 100%;
+  box-sizing: border-box;
   background: white;
   border: 1px solid #e8e8e8;
   border-radius: 18px;
@@ -74,6 +157,7 @@
 
 /* SUMMARY */
 .summary {
+  width: 100%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 18px;
@@ -102,6 +186,8 @@
 
 /* HISTORY CARD */
 .history-card {
+  width: 100%;
+  box-sizing: border-box;
   background: white;
   border-radius: 18px;
   border: 1px solid #e8e8e8;
@@ -363,13 +449,25 @@
 
 /* RESPONSIVE */
 @media (max-width: 900px) {
-  .riwayat-page {
+  .riwayat-navbar {
+    height: auto;
     padding: 20px;
+    flex-direction: column;
+    gap: 18px;
   }
 
-  .back-floating {
-    position: static;
-    margin-bottom: 18px;
+  .riwayat-nav-links {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .riwayat-user {
+    border-left: none;
+    padding-left: 0;
+  }
+
+  .riwayat-container {
+    padding: 35px 20px;
   }
 
   .summary {

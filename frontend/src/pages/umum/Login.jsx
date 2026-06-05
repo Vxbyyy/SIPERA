@@ -28,11 +28,18 @@ function Login() {
 
     try {
       const response = await axios.post("http://localhost:5000/api/auth/login", {
-        email: formData.email,
+        email: formData.email.trim(),
         password: formData.password,
       });
 
+      console.log("Login berhasil:", response.data);
+
       const { token, user } = response.data;
+
+      if (!token || !user) {
+        setError("Response login tidak valid. Token atau data user tidak ditemukan.");
+        return;
+      }
 
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
@@ -48,8 +55,12 @@ function Login() {
         setError("Role pengguna tidak dikenali.");
       }
     } catch (err) {
+      console.error("Login error:", err.response?.data || err.message);
+
       setError(
-        err.response?.data?.message || "Login gagal. Periksa email dan password."
+        err.response?.data?.message ||
+          err.response?.data?.error ||
+          "Login gagal. Periksa email dan password."
       );
     } finally {
       setLoading(false);
@@ -69,7 +80,9 @@ function Login() {
 
         <nav>
           <Link to="/">Beranda</Link>
-          <Link to="/login" className="nav-login">Masuk</Link>
+          <Link to="/login" className="nav-login">
+            Masuk
+          </Link>
           <Link to="/register" className="nav-register">
             Daftar
           </Link>

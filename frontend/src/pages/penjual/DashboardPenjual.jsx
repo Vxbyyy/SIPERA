@@ -39,8 +39,6 @@ function DashboardPenjual() {
 
       const semuaTernak = response.data || [];
 
-      // Jika backend sudah menyimpan userId dari token,
-      // maka dashboard penjual hanya menampilkan ternak milik penjual yang sedang login.
       const ternakPenjual = loggedInUser?.id
         ? semuaTernak.filter((ternak) => ternak.userId === loggedInUser.id)
         : semuaTernak;
@@ -114,7 +112,7 @@ function DashboardPenjual() {
             to="/penjual/riwayat-ternak"
             className={({ isActive }) => (isActive ? "active" : "")}
           >
-            Kelola Jualan
+            Riwayat Ternak
           </NavLink>
 
           <NavLink
@@ -125,10 +123,10 @@ function DashboardPenjual() {
           </NavLink>
 
           <NavLink
-            to="/penjual/aduan"
+            to="/penjual/chat"
             className={({ isActive }) => (isActive ? "active" : "")}
           >
-            Aduan
+            Chat
           </NavLink>
 
           <NavLink
@@ -215,20 +213,24 @@ function DashboardPenjual() {
                       </td>
 
                       <td className="aksi">
-                        <Link
-                          to={`/penjual/edit-ternak/${ternak.id}`}
-                          className="edit-icon"
-                        >
-                          ✎
-                        </Link>
+                        <div className="action-icon-wrapper">
+                          <Link
+                            to={`/penjual/edit-ternak/${ternak.id}`}
+                            className="action-icon-btn edit-icon-btn"
+                            title="Edit ternak"
+                          >
+                            <i className="fas fa-pen"></i>
+                          </Link>
 
-                        <button
-                          type="button"
-                          className="delete-icon"
-                          onClick={() => handleDeleteTernak(ternak.id)}
-                        >
-                          🗑
-                        </button>
+                          <button
+                            type="button"
+                            className="action-icon-btn delete-icon-btn"
+                            onClick={() => handleDeleteTernak(ternak.id)}
+                            title="Hapus ternak"
+                          >
+                            <i className="fas fa-trash"></i>
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   );
@@ -262,8 +264,10 @@ function DashboardPenjual() {
         <div>
           <h3>Navigasi</h3>
           <Link to="/penjual">Beranda</Link>
-          <Link to="/penjual/riwayat-ternak">Kelola Jualan</Link>
+          <Link to="/penjual/riwayat-ternak">Riwayat Ternak</Link>
           <Link to="/penjual/pesanan">Pesanan</Link>
+          <Link to="/penjual/chat">Chat</Link>
+          <Link to="/penjual/profil">Profil</Link>
         </div>
 
         <div>

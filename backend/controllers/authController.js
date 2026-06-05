@@ -2,6 +2,21 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 
+const getSafeUser = (user) => {
+  return {
+    id: user.id,
+    nama: user.nama,
+    email: user.email,
+    role: user.role,
+    noTelepon: user.noTelepon,
+    alamat: user.alamat,
+    namaBank: user.namaBank,
+    nomorRekening: user.nomorRekening,
+    namaPemilikRekening: user.namaPemilikRekening,
+    status: user.status,
+  };
+};
+
 exports.register = async (req, res) => {
   try {
     const {
@@ -11,6 +26,9 @@ exports.register = async (req, res) => {
       role,
       noTelepon,
       alamat,
+      namaBank,
+      nomorRekening,
+      namaPemilikRekening,
     } = req.body;
 
     const existingUser = await User.findOne({
@@ -32,11 +50,14 @@ exports.register = async (req, res) => {
       role,
       noTelepon,
       alamat,
+      namaBank,
+      nomorRekening,
+      namaPemilikRekening,
     });
 
     res.status(201).json({
       message: "Registrasi berhasil",
-      user,
+      user: getSafeUser(user),
     });
   } catch (error) {
     res.status(500).json({
@@ -60,14 +81,17 @@ exports.login = async (req, res) => {
       });
     }
 
-    const validPassword = await bcrypt.compare(
-      password,
-      user.password
-    );
+    const validPassword = await bcrypt.compare(password, user.password);
 
     if (!validPassword) {
       return res.status(401).json({
         message: "Password salah",
+      });
+    }
+
+    if (user.status === "Ditangguhkan") {
+      return res.status(403).json({
+        message: "Akun Anda sedang ditangguhkan. Silakan hubungi admin.",
       });
     }
 
@@ -79,23 +103,83 @@ exports.login = async (req, res) => {
       },
       process.env.JWT_SECRET,
       {
-        expiresIn: "1d",
+        expiresIn: "7d",
       }
     );
 
     res.status(200).json({
       message: "Login berhasil",
       token,
-      user: {
-        id: user.id,
-        nama: user.nama,
-        email: user.email,
-        role: user.role,
-      },
+      user: getSafeUser(user),
     });
   } catch (error) {
     res.status(500).json({
       message: "Login gagal",
+      error: error.message,
+    });
+  }
+};
+
+// GET /api/auth/profile
+exports.getProfile = async (req, res) => {
+  try {
+    const user = await User.findByPk(req.user.id);
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User tidak ditemukan",
+      });
+    }
+
+    res.status(200).json({
+      message: "Profil berhasil diambil",
+      user: getSafeUser(user),
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Gagal mengambil profil",
+      error: error.message,
+    });
+  }
+};
+
+// PUT /api/auth/profile
+exports.updateProfile = async (req, res) => {
+  try {
+    const user = await User.findByPk(req.user.id);
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User tidak ditemukan",
+      });
+    }
+
+    const {
+      nama,
+      noTelepon,
+      alamat,
+      namaBank,
+      nomorRekening,
+      namaPemilikRekening,
+    } = req.body;
+
+    await user.update({
+      nama: nama ?? user.nama,
+      noTelepon: noTelepon ?? user.noTelepon,
+      alamat: alamat ?? user.alamat,
+      namaBank: namaBank ?? user.namaBank,
+      nomorRekening: nomorRekening ?? user.nomorRekening,
+      namaPemilikRekening:
+        namaPemilikRekening ?? user.namaPemilikRekening,
+    });
+
+    res.status(200).json({
+      message: "Profil berhasil diperbarui",
+      user: getSafeUser(user),
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Gagal memperbarui profil",
       error: error.message,
     });
   }

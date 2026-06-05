@@ -39,8 +39,27 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
+const ternakValidation = [
+  body("nama").notEmpty().withMessage("Nama ternak wajib diisi"),
+  body("jenis").notEmpty().withMessage("Jenis ternak wajib diisi"),
+  body("harga").isNumeric().withMessage("Harga harus berupa angka"),
+  body("usia").notEmpty().withMessage("Usia wajib diisi"),
+  body("kondisi").notEmpty().withMessage("Kondisi wajib diisi"),
+  body("stok").isNumeric().withMessage("Stok harus berupa angka"),
+  body("lokasi").notEmpty().withMessage("Lokasi wajib diisi"),
+  body("deskripsi").notEmpty().withMessage("Deskripsi wajib diisi"),
+];
+
 // Semua user boleh melihat daftar ternak
 router.get("/", controller.getAll);
+
+// Detail ternak boleh dilihat penjual, pembeli, dan admin
+router.get(
+  "/:id",
+  verifyToken,
+  allowRoles("penjual", "pembeli", "admin"),
+  controller.getById
+);
 
 // Hanya penjual yang boleh menambahkan ternak
 router.post(
@@ -48,21 +67,23 @@ router.post(
   verifyToken,
   allowRoles("penjual"),
   upload.single("foto"),
-  [
-    body("nama").notEmpty().withMessage("Nama ternak wajib diisi"),
-    body("jenis").notEmpty().withMessage("Jenis ternak wajib diisi"),
-    body("harga").isNumeric().withMessage("Harga harus berupa angka"),
-    body("usia").notEmpty().withMessage("Usia wajib diisi"),
-    body("kondisi").notEmpty().withMessage("Kondisi wajib diisi"),
-    body("stok").isNumeric().withMessage("Stok harus berupa angka"),
-    body("lokasi").notEmpty().withMessage("Lokasi wajib diisi"),
-    body("deskripsi").notEmpty().withMessage("Deskripsi wajib diisi"),
-  ],
+  ternakValidation,
   validateRequest,
   controller.create
 );
 
-// Hanya penjual yang boleh menghapus ternak
+// Hanya penjual yang boleh mengedit ternak miliknya
+router.put(
+  "/:id",
+  verifyToken,
+  allowRoles("penjual"),
+  upload.single("foto"),
+  ternakValidation,
+  validateRequest,
+  controller.update
+);
+
+// Hanya penjual yang boleh menghapus ternak miliknya
 router.delete(
   "/:id",
   verifyToken,

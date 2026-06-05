@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
-import axios from "axios";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import api from "../../api/axiosConfig";
 import "../../styles/pembeli/DashboardPembeli.css";
 
 function DashboardPembeli() {
+  const navigate = useNavigate();
+
   const [search, setSearch] = useState("");
   const [kategori, setKategori] = useState("Semua");
   const [dataTernak, setDataTernak] = useState([]);
@@ -33,12 +35,15 @@ function DashboardPembeli() {
     try {
       setLoading(true);
 
-      const response = await axios.get("http://localhost:5000/api/ternak");
+      const response = await api.get("/api/ternak");
 
-      setDataTernak(response.data);
+      setDataTernak(response.data || []);
     } catch (error) {
       console.error("Gagal mengambil data ternak:", error);
-      alert("Gagal mengambil data ternak dari database.");
+      alert(
+        error.response?.data?.message ||
+          "Gagal mengambil data ternak dari database."
+      );
     } finally {
       setLoading(false);
     }
@@ -63,11 +68,50 @@ function DashboardPembeli() {
     return cocokSearch && cocokKategori;
   });
 
+  const handlePesan = async (ternakId) => {
+    const konfirmasi = window.confirm(
+      "Apakah Anda yakin ingin memesan ternak ini?"
+    );
+
+    if (!konfirmasi) return;
+
+    try {
+      await api.post("/api/pesanan", {
+        ternakId,
+        jumlah: 1,
+      });
+
+      alert("Pesanan berhasil dibuat.");
+      navigate("/pembeli/transaksi");
+    } catch (error) {
+      console.error("Gagal membuat pesanan:", error);
+      alert(
+        error.response?.data?.message ||
+          error.response?.data?.error ||
+          "Gagal membuat pesanan."
+      );
+    }
+  };
+
+  const handleChat = (ternak) => {
+    if (!ternak.userId) {
+      alert("Data penjual tidak ditemukan.");
+      return;
+    }
+
+    navigate("/pembeli/chat", {
+      state: {
+        receiverId: ternak.userId,
+        namaPenjual: ternak.penjual?.nama || "Penjual",
+      },
+    });
+  };
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     localStorage.removeItem("role");
-    window.location.href = "/login";
+    navigate("/login");
   };
 
   return (
@@ -166,7 +210,14 @@ function DashboardPembeli() {
               const fotoUrl = getFotoTernak(ternak.foto);
 
               return (
-                <div className="buyer-card" key={ternak.id}>
+                <div
+                  className="buyer-card"
+                  key={ternak.id}
+                  onClick={() =>
+                    navigate(`/pembeli/detail-ternak/${ternak.id}`)
+                  }
+                  style={{ cursor: "pointer" }}
+                >
                   {fotoUrl ? (
                     <img src={fotoUrl} alt={ternak.nama} />
                   ) : (
@@ -198,18 +249,27 @@ function DashboardPembeli() {
                       <p className="price">{formatRupiah(ternak.harga)}</p>
 
                       <div className="card-actions">
-                        <Link
-                          to={`/pembeli/pesan/${ternak.id}`}
+                        <button
+                          type="button"
                           className="detail-btn"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handlePesan(ternak.id);
+                          }}
                         >
                           Pesan
-                        </Link>
-                        <Link
-                          to={`/pembeli/chat/${ternak.id}`}
+                        </button>
+
+                        <button
+                          type="button"
                           className="chat-btn"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleChat(ternak);
+                          }}
                         >
                           Chat
-                        </Link>
+                        </button>
                       </div>
                     </div>
                   </div>
