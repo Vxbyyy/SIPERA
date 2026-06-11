@@ -14,6 +14,7 @@ const ternakRoutes = require("./routes/ternakRoutes");
 const authRoutes = require("./routes/authRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const chatRoutes = require("./routes/chatRoutes");
+const laporanRoutes = require("./routes/laporanRoutes");
 const pesananRoutes = require("./routes/pesananRoutes");
 
 const app = express();
@@ -43,6 +44,7 @@ app.use("/api/ternak", ternakRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/chat", chatRoutes);
+app.use("/api/laporan", laporanRoutes);
 app.use("/api/pesanan", pesananRoutes);
 
 module.exports = app;

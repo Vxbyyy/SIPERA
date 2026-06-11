@@ -10,6 +10,7 @@ import TambahTernak from "./pages/penjual/TambahTernak";
 import EditTernak from "./pages/penjual/EditTernak";
 import PesananPenjual from "./pages/penjual/PesananPenjual";
 import ChatPenjual from "./pages/penjual/ChatPenjual";
+import LaporMasalah from "./pages/penjual/LaporanMasalah";
 import ProfilPenjual from "./pages/penjual/ProfilPenjual";
 
 import DashboardPembeli from "./pages/pembeli/DashboardPembeli";
@@ -20,6 +21,7 @@ import DetailTernakPembeli from "./pages/pembeli/DetailTernakPembeli";
 import DetailPemesanan from "./pages/pembeli/DetailPemesanan";
 
 import DashboardAdmin from "./pages/Admin/DashboardAdmin";
+import LaporanMasalah from "./pages/Admin/LaporanMasalah";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -47,6 +49,15 @@ function App() {
           element={
             <ProtectedRoute allowedRoles={["admin"]}>
               <DashboardAdmin />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/laporan"
+          element={
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <LaporanMasalah />
             </ProtectedRoute>
           }
         />
@@ -113,7 +124,11 @@ function App() {
               <ChatPenjual />
             </ProtectedRoute>
           }
-        />
+            Route
+            path="/penjual/laporan-masalah"
+            element={<LaporanMasalah />}
+          />
+        /
 
         <Route
           path="/penjual/profil"

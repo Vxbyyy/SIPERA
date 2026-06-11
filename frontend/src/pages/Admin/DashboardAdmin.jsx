@@ -52,6 +52,7 @@ function DashboardAdmin() {
   useEffect(() => {
     fetchUsers();
     fetchTernak();
+    fetchLaporan();
   }, []);
 
   const filteredUsers = useMemo(() => {
@@ -76,7 +77,15 @@ function DashboardAdmin() {
     (user) => user.role === "penjual" && user.status === "Aktif"
   ).length;
 
-  const laporanMasalah = 0;
+  const [laporanMasalah, setLaporanMasalah] = useState([]);
+  const fetchLaporan = async () => {
+  try {
+    const response = await api.get("/api/admin/laporan");
+    setLaporanMasalah(response.data);
+  } catch (error) {
+    console.error(error);
+  }
+};
 
   const formatTanggal = (tanggal) => {
     if (!tanggal) return "-";
@@ -147,16 +156,16 @@ function DashboardAdmin() {
         </div>
 
         <nav className="admin-nav">
-          <Link to="/admin/dashboard" className="active">
-            Panel Admin
-          </Link>
-
           <div className="admin-profile">
             <strong>{loggedInUser?.nama || "Admin SIPERA"}</strong>
             <small>{formatRole(loggedInUser?.role || "admin")}</small>
           </div>
 
-          <button className="logout-btn" onClick={handleLogout} title="Logout">
+          <button
+            className="logout-btn"
+            onClick={handleLogout}
+            title="Logout"
+          >
             <i className="fas fa-sign-out-alt"></i>
           </button>
         </nav>
@@ -204,15 +213,23 @@ function DashboardAdmin() {
             </div>
           </div>
 
-          <div className="stat-card">
-            <div className="stat-icon red">
-              <i className="fas fa-shield-alt"></i>
-            </div>
-            <div>
-              <p>Laporan Masalah</p>
-              <h3>{laporanMasalah}</h3>
-            </div>
-          </div>
+          <Link
+  to="/admin/laporan"
+  className="stat-card laporan-card"
+>
+  <div className="stat-icon red">
+    <i className="fas fa-exclamation-triangle"></i>
+  </div>
+
+  <div>
+    <p>Laporan Masalah</p>
+    <h3>{laporanMasalah.length}</h3>
+
+    <span className="laporan-link">
+      Lihat Detail →
+    </span>
+  </div>
+</Link>
         </section>
 
         {/* USER MANAGEMENT */}

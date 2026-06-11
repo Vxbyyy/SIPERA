@@ -1,0 +1,89 @@
+.lapor-page {
+  min-height: 100vh;
+  background: #f4f6f9;
+  padding: 40px;
+}
+
+.lapor-card {
+  max-width: 800px;
+  margin: auto;
+  background: #fff;
+  padding: 35px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+.lapor-header {
+  margin-bottom: 25px;
+}
+
+.lapor-header h1 {
+  color: #7f461b;
+  margin-bottom: 10px;
+}
+
+.lapor-header p {
+  color: #666;
+  line-height: 1.6;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #dcdcdc;
+  border-radius: 10px;
+  font-size: 15px;
+}
+
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #7f461b;
+}
+
+.lapor-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.btn-kirim {
+  flex: 1;
+  background: #7f461b;
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-kirim:hover {
+  background: #5f3415;
+}
+
+.btn-kembali {
+  flex: 1;
+  text-align: center;
+  text-decoration: none;
+  background: #e9ecef;
+  color: #333;
+  padding: 14px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.btn-kembali:hover {
+  background: #dfe3e6;
+}

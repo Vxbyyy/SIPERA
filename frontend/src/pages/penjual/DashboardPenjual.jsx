@@ -128,13 +128,22 @@ function DashboardPenjual() {
           >
             Chat
           </NavLink>
+        <NavLink
+          to="/penjual/laporan-masalah"
+          className={({ isActive }) =>
+            isActive ? "active" : ""
+          }
+        >
+          Laporan
+        </NavLink>
+         
 
-          <NavLink
-            to="/penjual/profil"
-            className={({ isActive }) => (isActive ? "active" : "")}
-          >
-            Profil
-          </NavLink>
+        <NavLink
+          to="/penjual/profil"
+          className={({ isActive }) => (isActive ? "active" : "")}
+        >
+          Profil
+        </NavLink>
         </div>
 
         <div className="seller-user">
@@ -267,6 +276,7 @@ function DashboardPenjual() {
           <Link to="/penjual/riwayat-ternak">Riwayat Ternak</Link>
           <Link to="/penjual/pesanan">Pesanan</Link>
           <Link to="/penjual/chat">Chat</Link>
+          <Link to="/penjual/laporan-masalah">Laporan Masalah</Link>
           <Link to="/penjual/profil">Profil</Link>
         </div>
 

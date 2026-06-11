@@ -213,19 +213,21 @@
   font-size: 14px;
 }
 
-.history-list {
-  display: flex;
-  flex-direction: column;
+.history-list{
+  display:grid;
+  grid-template-columns:
+  repeat(auto-fill,minmax(320px,1fr));
+  gap:24px;
+  padding:24px;
 }
 
-.history-item {
-  display: grid;
-  grid-template-columns: 40px 90px 1.5fr 1fr 100px 90px;
-  align-items: center;
-  gap: 18px;
-  padding: 18px 24px;
-  border-bottom: 1px solid #efefef;
-  transition: 0.2s;
+.history-item{
+  display:flex;
+  flex-direction:column;
+  background:white;
+  border-radius:18px;
+  overflow:hidden;
+  box-shadow:0 6px 20px rgba(0,0,0,.08);
 }
 
 .history-item:hover {
@@ -238,8 +240,8 @@
 }
 
 .history-img {
-  width: 90px;
-  height: 70px;
+  width: 100%;
+  height: 220px;
   object-fit: cover;
   border-radius: 12px;
   border: 1px solid #e8e0db;
