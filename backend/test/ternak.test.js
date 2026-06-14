@@ -15,22 +15,23 @@ describe("Unit Test Modul Ternak", () => {
 
     beforeAll(async () => {
 
-    await request(app)
-      .post("/api/auth/register")
-      .send(penjualData);
+      const register = await request(app)
+        .post("/api/auth/register")
+        .send(penjualData);
 
-    const login = await request(app)
-      .post("/api/auth/login")
-      .send({
-        email: penjualData.email,
-        password: penjualData.password
-      });
+      console.log("REGISTER RESPONSE:", register.body);
 
-    console.log("LOGIN RESPONSE:", login.body);
+      const login = await request(app)
+        .post("/api/auth/login")
+        .send({
+          email: penjualData.email,
+          password: penjualData.password
+        });
 
-    token = login.body.token;
+      console.log("LOGIN RESPONSE:", login.body);
 
-  }); 
+      token = login.body.token;
+    });
 
   test("GET /api/ternak berhasil menampilkan data ternak", async () => {
 
