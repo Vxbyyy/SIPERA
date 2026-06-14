@@ -8,7 +8,18 @@ on:
 
 jobs:
   test:
+
     runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: ""
+          MYSQL_DATABASE: sipera_test
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+        ports:
+          - 3306:3306
 
     steps:
       - name: Checkout Repository
@@ -22,6 +33,17 @@ jobs:
       - name: Install Dependency
         working-directory: backend
         run: npm install
+
+      - name: Create .env.test
+        working-directory: backend
+        run: |
+          echo DB_NAME=sipera_test >> .env.test
+          echo DB_USER=root >> .env.test
+          echo DB_PASSWORD= >> .env.test
+          echo DB_HOST=127.0.0.1 >> .env.test
+          echo DB_DIALECT=mysql >> .env.test
+          echo DB_PORT=3306 >> .env.test
+          echo JWT_SECRET=sipera_test_secret >> .env.test
 
       - name: Run Test
         working-directory: backend
