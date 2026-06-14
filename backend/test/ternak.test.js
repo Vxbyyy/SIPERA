@@ -13,7 +13,7 @@ describe("Unit Test Modul Ternak", () => {
     role: "penjual"
   };
 
-  beforeAll(async () => {
+    beforeAll(async () => {
 
     await request(app)
       .post("/api/auth/register")
@@ -26,8 +26,11 @@ describe("Unit Test Modul Ternak", () => {
         password: penjualData.password
       });
 
+    console.log("LOGIN RESPONSE:", login.body);
+
     token = login.body.token;
-  });
+
+  }); 
 
   test("GET /api/ternak berhasil menampilkan data ternak", async () => {
 
