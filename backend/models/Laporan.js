@@ -1,5 +1,6 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
+const User = require("./user");
 
 const Laporan = sequelize.define("Laporan", {
   kategori: {
@@ -17,10 +18,24 @@ const Laporan = sequelize.define("Laporan", {
     defaultValue: "Menunggu",
   },
 
+  balasan: {
+    type: DataTypes.TEXT,
+    allowNull: true,
+  },
+
   userId: {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
+});
+
+// RELASI
+Laporan.belongsTo(User, {
+  foreignKey: "userId",
+});
+
+User.hasMany(Laporan, {
+  foreignKey: "userId",
 });
 
 module.exports = Laporan;

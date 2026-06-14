@@ -1,0 +1,30 @@
+yaml
+name: SIPERA Test
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install Dependency
+        run: npm install
+        working-directory: backend
+
+      - name: Run Test
+        run: npm test
+        working-directory: backend

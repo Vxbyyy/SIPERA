@@ -10,7 +10,7 @@ import TambahTernak from "./pages/penjual/TambahTernak";
 import EditTernak from "./pages/penjual/EditTernak";
 import PesananPenjual from "./pages/penjual/PesananPenjual";
 import ChatPenjual from "./pages/penjual/ChatPenjual";
-import LaporMasalah from "./pages/penjual/LaporanMasalah";
+import LaporMasalah from "./pages/penjual/LaporMasalah";
 import ProfilPenjual from "./pages/penjual/ProfilPenjual";
 
 import DashboardPembeli from "./pages/pembeli/DashboardPembeli";
@@ -117,18 +117,23 @@ function App() {
           }
         />
 
-        <Route
+         <Route
           path="/penjual/chat"
           element={
             <ProtectedRoute allowedRoles={["penjual"]}>
               <ChatPenjual />
             </ProtectedRoute>
           }
-            Route
-            path="/penjual/laporan-masalah"
-            element={<LaporanMasalah />}
-          />
-        /
+        />
+
+        <Route
+          path="/penjual/lapor-masalah"
+          element={
+            <ProtectedRoute allowedRoles={["penjual"]}>
+              <LaporMasalah />
+            </ProtectedRoute>
+          }
+        />
 
         <Route
           path="/penjual/profil"

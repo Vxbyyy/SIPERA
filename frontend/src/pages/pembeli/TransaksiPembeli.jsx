@@ -1,39 +1,59 @@
 import { NavLink, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import api from "../../api/axiosConfig";
 import "../../styles/pembeli/TransaksiPembeli.css";
 
 function TransaksiPembeli() {
   const navigate = useNavigate();
+
+  const [transaksi, setTransaksi] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   const loggedInUser = JSON.parse(localStorage.getItem("user"));
 
-  const transaksi = [
-    {
-      id: 1,
-      namaTernak: "Kerbau Toraja",
-      penjual: "Penjual Toraja",
-      jumlah: 1,
-      total: "Rp 100.000.000",
-      tanggal: "24 Mei 2026",
-      status: "Menunggu Pembayaran",
-    },
-    {
-      id: 2,
-      namaTernak: "Kambing Etawa",
-      penjual: "Ternak Rantepao",
-      jumlah: 2,
-      total: "Rp 12.000.000",
-      tanggal: "23 Mei 2026",
-      status: "Diproses",
-    },
-    {
-      id: 3,
-      namaTernak: "Ayam Kampung",
-      penjual: "Peternak Lokal",
-      jumlah: 5,
-      total: "Rp 750.000",
-      tanggal: "22 Mei 2026",
-      status: "Selesai",
-    },
-  ];
+  const formatRupiah = (angka) => {
+    return new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: "IDR",
+      minimumFractionDigits: 0,
+    }).format(Number(angka || 0));
+  };
+
+  const fetchPesanan = async () => {
+    try {
+      setLoading(true);
+
+      const response = await api.get("/api/pesanan/pembeli");
+
+      setTransaksi(response.data || []);
+    } catch (error) {
+      console.error("Gagal mengambil transaksi:", error);
+
+      alert(
+        error.response?.data?.message ||
+          "Gagal mengambil data transaksi."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchPesanan();
+  }, []);
+
+  // Statistik
+  const jumlahMenunggu = transaksi.filter(
+    (item) => item.status === "Menunggu Pembayaran"
+  ).length;
+
+  const jumlahDiproses = transaksi.filter(
+    (item) => item.status === "Diproses"
+  ).length;
+
+  const jumlahSelesai = transaksi.filter(
+    (item) => item.status === "Selesai"
+  ).length;
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -47,6 +67,7 @@ function TransaksiPembeli() {
       <nav className="buyer-transaction-navbar">
         <div className="buyer-transaction-logo">
           <div className="buyer-transaction-logo-box">S</div>
+
           <h2>
             SIPERA <span>TORAJA</span>
           </h2>
@@ -56,17 +77,32 @@ function TransaksiPembeli() {
           <NavLink to="/pembeli" end>
             Beranda
           </NavLink>
-          <NavLink to="/pembeli/transaksi">Transaksi</NavLink>
-          <NavLink to="/pembeli/chat">Chat</NavLink>
-          <NavLink to="/pembeli/profil">Profil</NavLink>
+
+          <NavLink to="/pembeli/transaksi">
+            Transaksi
+          </NavLink>
+
+          <NavLink to="/pembeli/chat">
+            Chat
+          </NavLink>
+
+          <NavLink to="/pembeli/profil">
+            Profil
+          </NavLink>
         </div>
 
         <div className="buyer-transaction-user">
           <div>
-            <strong>{loggedInUser?.nama || "Pembeli"}</strong>
+            <strong>
+              {loggedInUser?.nama || "Pembeli"}
+            </strong>
             <span>Buyer</span>
           </div>
-          <button type="button" onClick={handleLogout}>
+
+          <button
+            type="button"
+            onClick={handleLogout}
+          >
             ↪
           </button>
         </div>
@@ -75,17 +111,22 @@ function TransaksiPembeli() {
       <main className="buyer-transaction-main">
         <section className="buyer-transaction-header">
           <h1>Transaksi Saya</h1>
-          <p>Pantau status transaksi pembelian ternak Anda di SIPERA.</p>
+          <p>
+            Pantau status transaksi pembelian
+            ternak Anda di SIPERA.
+          </p>
         </section>
 
+        {/* Statistik */}
         <section className="buyer-transaction-stats">
           <div className="transaction-stat-card">
             <div className="transaction-stat-icon pending">
               <i className="fas fa-wallet"></i>
             </div>
+
             <div>
               <p>Menunggu</p>
-              <h3>1</h3>
+              <h3>{jumlahMenunggu}</h3>
             </div>
           </div>
 
@@ -93,9 +134,10 @@ function TransaksiPembeli() {
             <div className="transaction-stat-icon process">
               <i className="fas fa-truck"></i>
             </div>
+
             <div>
               <p>Diproses</p>
-              <h3>1</h3>
+              <h3>{jumlahDiproses}</h3>
             </div>
           </div>
 
@@ -103,13 +145,15 @@ function TransaksiPembeli() {
             <div className="transaction-stat-icon done">
               <i className="fas fa-check-circle"></i>
             </div>
+
             <div>
               <p>Selesai</p>
-              <h3>1</h3>
+              <h3>{jumlahSelesai}</h3>
             </div>
           </div>
         </section>
 
+        {/* Riwayat */}
         <section className="buyer-transaction-card">
           <div className="buyer-transaction-card-title">
             <i className="fas fa-file-invoice"></i>
@@ -131,38 +175,78 @@ function TransaksiPembeli() {
               </thead>
 
               <tbody>
-                {transaksi.map((item) => (
-                  <tr key={item.id}>
-                    <td>{item.namaTernak}</td>
-                    <td>{item.penjual}</td>
-                    <td>{item.jumlah}</td>
-                    <td className="transaction-price">{item.total}</td>
-                    <td>{item.tanggal}</td>
-                    <td>
-                      <span
-                        className={`transaction-status ${
-                          item.status === "Selesai"
-                            ? "done"
-                            : item.status === "Diproses"
-                            ? "process"
-                            : "pending"
-                        }`}
-                      >
-                        {item.status}
-                      </span>
-                    </td>
-                    <td>
-                      <button 
-                      type="button" 
-                      className="transaction-detail-btn">
-                      onClick={() =>
-                        navigate(`/pembeli/pemesanan/${item.id}`)
-                        }
-                        Detail
-                      </button>
+                {loading ? (
+                  <tr>
+                    <td colSpan="7">
+                      Memuat data transaksi...
                     </td>
                   </tr>
-                ))}
+                ) : transaksi.length > 0 ? (
+                  transaksi.map((item) => (
+                    <tr key={item.id}>
+                      <td>
+                        {item.ternak?.nama || "-"}
+                      </td>
+
+                      <td>
+                        {item.ternak?.penjual?.nama ||
+                          "Penjual"}
+                      </td>
+
+                      <td>{item.jumlah}</td>
+
+                      <td className="transaction-price">
+                        {formatRupiah(
+                          item.totalHarga
+                        )}
+                      </td>
+
+                      <td>
+                        {new Date(
+                          item.createdAt
+                        ).toLocaleDateString(
+                          "id-ID"
+                        )}
+                      </td>
+
+                      <td>
+                        <span
+                          className={`transaction-status ${
+                            item.status ===
+                            "Selesai"
+                              ? "done"
+                              : item.status ===
+                                "Diproses"
+                              ? "process"
+                              : "pending"
+                          }`}
+                        >
+                          {item.status}
+                        </span>
+                      </td>
+
+                      <td>
+                        <button
+                          type="button"
+                          className="transaction-detail-btn"
+                          onClick={() =>
+                            navigate(
+                              `/pembeli/pemesanan/${item.id}`
+                            )
+                          }
+                        >
+                          Detail
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="7">
+                      Belum ada transaksi
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>

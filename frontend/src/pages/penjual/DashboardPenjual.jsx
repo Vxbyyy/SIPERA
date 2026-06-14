@@ -129,7 +129,7 @@ function DashboardPenjual() {
             Chat
           </NavLink>
         <NavLink
-          to="/penjual/laporan-masalah"
+          to="/penjual/lapor-masalah"
           className={({ isActive }) =>
             isActive ? "active" : ""
           }

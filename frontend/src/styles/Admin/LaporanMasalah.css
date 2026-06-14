@@ -1,0 +1,106 @@
+.laporan-admin-page {
+  min-height: 100vh;
+  background: #f5f6fa;
+  padding: 40px;
+}
+
+.laporan-container {
+  max-width: 1300px;
+  margin: auto;
+}
+
+.laporan-header {
+  margin-bottom: 20px;
+}
+
+.laporan-header h1 {
+  font-size: 36px;
+  color: #1e293b;
+  margin-bottom: 8px;
+}
+
+.laporan-header p {
+  color: #64748b;
+}
+
+.laporan-card {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+}
+
+.laporan-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.laporan-table thead {
+  background: #f8fafc;
+}
+
+.laporan-table th {
+  padding: 18px;
+  text-align: left;
+  color: #475569;
+}
+
+.laporan-table td {
+  padding: 18px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.status-badge {
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.waiting {
+  background: #fff7ed;
+  color: #c2410c;
+}
+
+.done {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.btn-balas {
+  background: #8b5e3c;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-balas:hover {
+  background: #6f472a;
+}
+
+.belum-dibalas {
+  color: #94a3b8;
+  font-style: italic;
+}
+
+.empty-data {
+  text-align: center;
+  padding: 30px;
+  color: #64748b;
+}
+
+.btn-kembali {
+  display: inline-block;
+  margin-top: 20px;
+  text-decoration: none;
+  background: #8b5e3c;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 10px;
+}
+
+.btn-kembali:hover {
+  background: #6f472a;
+}

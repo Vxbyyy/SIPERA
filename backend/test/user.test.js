@@ -10,13 +10,11 @@ describe("Unit Test Modul User", () => {
   test("Berhasil menambahkan user", async () => {
 
     const user = await User.create({
-      nama: "User Testing",
-      email: "user@test.com",
-      password: "123456",
-      role: "pembeli",
-      noTelepon: "08123456789",
-      alamat: "Toraja"
-    });
+    nama: "User Testing",
+    email: `user${Date.now()}@test.com`,
+    password: "123456",
+    role: "pembeli"
+  });
 
     expect(user.nama).toBe("User Testing");
   });

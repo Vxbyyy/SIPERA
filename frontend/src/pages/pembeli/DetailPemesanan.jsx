@@ -66,6 +66,7 @@ function DetailPemesanan() {
     setBuktiTransfer(file);
     setPreviewBukti(URL.createObjectURL(file));
   };
+  
 
   const handleBuatPesanan = async () => {
     if (!ternak) return;
@@ -183,6 +184,7 @@ function DetailPemesanan() {
       </div>
     );
   }
+
 
   const fotoUrl = getFotoTernak(ternak.foto);
   const subtotalProduk = Number(ternak.harga || 0) * Number(jumlah || 1);
