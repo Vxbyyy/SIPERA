@@ -63,6 +63,46 @@ describe("Unit Test Modul Ternak", () => {
     expect(response.statusCode).toBe(201);
   });
 
+  test("GET detail ternak tidak ditemukan", async () => {
+
+  const response = await request(app)
+    .get("/api/ternak/999999")
+    .set("Authorization", `Bearer ${token}`);
+
+  expect(response.statusCode).toBe(404);
+
+});
+
+test("PUT ternak tidak ditemukan", async () => {
+
+  const response = await request(app)
+    .put("/api/ternak/999999")
+    .set("Authorization", `Bearer ${token}`)
+    .send({
+      nama: "Test",
+      jenis: "Kerbau",
+      harga: 1000,
+      usia: "1 Tahun",
+      kondisi: "Sehat",
+      stok: 1,
+      lokasi: "Toraja",
+      deskripsi: "Test"
+    });
+
+  expect(response.statusCode).toBe(404);
+
+});
+
+test("DELETE ternak tidak ditemukan", async () => {
+
+  const response = await request(app)
+    .delete("/api/ternak/999999")
+    .set("Authorization", `Bearer ${token}`);
+
+  expect(response.statusCode).toBe(404);
+
+});
+
   afterAll(async () => {
     await db.close();
   });
