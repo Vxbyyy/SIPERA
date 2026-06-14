@@ -1,5 +1,5 @@
 const db = require("../config/database");
-const User = require("../models/User");
+const User = require("../models/user");
 
 describe("Unit Test Modul User", () => {
 
