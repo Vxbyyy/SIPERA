@@ -1,7 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import api from "../../api/axiosConfig";
+import Footer from "../umum/Footer";
 import "../../styles/Admin/DashboardAdmin.css";
+import logoSipera from "../../assets/logo-sipera.jpeg";
 
 function DashboardAdmin() {
   const navigate = useNavigate();
@@ -148,12 +150,17 @@ function DashboardAdmin() {
     <div className="admin-page">
       {/* NAVBAR */}
       <header className="admin-navbar">
-        <div className="admin-logo">
-          <div className="admin-logo-box">S</div>
-          <h2>
-            SIPERA <span>TORAJA</span>
-          </h2>
-        </div>
+      <div className="admin-logo">
+        <img
+          src={logoSipera}
+          alt="SIPERA Toraja"
+          className="admin-logo-image"
+        />
+
+        <h2>
+          SIPERA <span>TORAJA</span>
+        </h2>
+      </div>
 
         <nav className="admin-nav">
           <div className="admin-profile">
@@ -366,68 +373,8 @@ function DashboardAdmin() {
         </section>
       </main>
 
-      {/* FOOTER */}
-      <footer className="admin-footer">
-        <div className="footer-content">
-          <div className="footer-brand">
-            <div className="footer-logo">
-              <div className="footer-logo-box">S</div>
-              <h2>
-                SIPERA <span>TORAJA</span>
-              </h2>
-            </div>
-            <p>
-              Sistem Informasi Penjualan Ternak Toraja. Menghubungkan peternak
-              lokal dengan pembeli secara transparan dan efisien.
-            </p>
-          </div>
+      <Footer />
 
-          <div className="footer-column">
-            <h3>Navigasi</h3>
-            <Link to="/">Beranda</Link>
-            <Link to="/pembeli/dashboard">Pasar Kerbau</Link>
-            <Link to="/pembeli/dashboard">Pasar Babi</Link>
-            <Link to="/">Tentang Kami</Link>
-          </div>
-
-          <div className="footer-column">
-            <h3>Hubungi Kami</h3>
-            <p>
-              <i className="fas fa-phone"></i> +62 812 3456 7890
-            </p>
-            <p>
-              <i className="far fa-envelope"></i> info@sipera-toraja.com
-            </p>
-            <p>
-              <i className="fas fa-map-marker-alt"></i> Rantepao, Toraja Utara,
-              Sulawesi Selatan
-            </p>
-          </div>
-
-          <div className="footer-column">
-            <h3>Ikuti Kami</h3>
-            <div className="social-icons">
-              <a href="#facebook" aria-label="Facebook">
-                <i className="fab fa-facebook-f"></i>
-              </a>
-              <a href="#instagram" aria-label="Instagram">
-                <i className="fab fa-instagram"></i>
-              </a>
-              <a href="#twitter" aria-label="Twitter">
-                <i className="fab fa-twitter"></i>
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <div className="footer-bottom">
-          <p>© 2024 SIPERA Toraja. Hak Cipta Dilindungi.</p>
-          <div>
-            <a href="#privacy">Kebijakan Privasi</a>
-            <a href="#terms">Syarat & Ketentuan</a>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }

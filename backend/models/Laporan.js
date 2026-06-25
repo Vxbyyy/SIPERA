@@ -23,6 +23,11 @@ const Laporan = sequelize.define("Laporan", {
     allowNull: true,
   },
 
+  balasanUser: {
+    type: DataTypes.TEXT,
+    allowNull: true,
+  },
+
   userId: {
     type: DataTypes.INTEGER,
     allowNull: false,

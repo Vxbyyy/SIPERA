@@ -2,6 +2,9 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import api from "../../api/axiosConfig";
 import "../../styles/penjual/DashboardPenjual.css";
+import logoSipera from "../../assets/logo-sipera.jpeg";
+import Footer from "../umum/Footer";
+import useAuthStore from "../../store/authStore";
 
 function DashboardPenjual() {
   const navigate = useNavigate();
@@ -9,7 +12,10 @@ function DashboardPenjual() {
   const [dataTernak, setDataTernak] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const loggedInUser = JSON.parse(localStorage.getItem("user"));
+  const loggedInUser =
+  useAuthStore(
+    (state) => state.user
+  );
 
   const formatRupiah = (angka) => {
     return new Intl.NumberFormat("id-ID", {
@@ -28,7 +34,7 @@ function DashboardPenjual() {
       return foto;
     }
 
-    return `http://localhost:5000/uploads/${foto}`;
+   return `${import.meta.env.VITE_API_URL}/uploads/${foto}`;
   };
 
   const fetchTernak = async () => {
@@ -91,15 +97,19 @@ function DashboardPenjual() {
 
   return (
     <div className="seller-dashboard">
-      <nav className="seller-navbar">
-        <div className="seller-logo">
-          <div className="seller-logo-box">S</div>
-          <h2>
-            SIPERA <span>TORAJA</span>
-          </h2>
-        </div>
+      <nav className="app-navbar">
+        <div className="app-logo">
+        <img
+          src={logoSipera}
+          alt="SIPERA Toraja"
+          className="app-logo-image"
+        />
+        <h2>
+          SIPERA <span>TORAJA</span>
+        </h2>
+      </div>
 
-        <div className="seller-nav-links">
+        <div className="app-nav-links">
           <NavLink
             to="/penjual"
             end
@@ -146,29 +156,42 @@ function DashboardPenjual() {
         </NavLink>
         </div>
 
-        <div className="seller-user">
+       <div className="app-user">
           <div>
             <strong>{loggedInUser?.nama || "Penjual"}</strong>
             <span>Seller</span>
           </div>
 
-          <button type="button" className="seller-logout" onClick={handleLogout}>
+          <button
+            type="button"
+            className="app-logout"
+            onClick={handleLogout}
+          >
             ↪
           </button>
         </div>
       </nav>
 
-      <main className="seller-main">
-        <section className="seller-header">
-          <div>
-            <h1>Dashboard Penjual</h1>
-            <p>Kelola data ternak yang kamu jual di SIPERA Toraja.</p>
-          </div>
+      <main className="app-main">
+       <section className="app-page-header">
+        <span className="app-page-label">
+          Dashboard Penjual
+        </span>
 
-          <Link to="/penjual/tambah-ternak" className="add-button">
-            + Tambah Ternak
-          </Link>
-        </section>
+        <h1>Dashboard Penjual</h1>
+
+        <p>
+          Kelola seluruh data ternak yang Anda jual
+          melalui platform SIPERA Toraja.
+        </p>
+
+        <Link
+          to="/penjual/tambah-ternak"
+          className="add-button"
+        >
+          + Tambah Ternak
+        </Link>
+      </section>
 
         <section className="seller-table-card">
           <table>
@@ -256,48 +279,10 @@ function DashboardPenjual() {
         </section>
       </main>
 
-      <footer className="seller-footer">
-        <div className="footer-brand">
-          <div className="seller-logo">
-            <div className="seller-logo-box">S</div>
-            <h2>
-              SIPERA <span>TORAJA</span>
-            </h2>
-          </div>
-          <p>
-            Sistem Informasi Penjualan Ternak Toraja. Menghubungkan peternak
-            lokal dengan pembeli secara transparan dan efisien.
-          </p>
-        </div>
+<Footer />
 
-        <div>
-          <h3>Navigasi</h3>
-          <Link to="/penjual">Beranda</Link>
-          <Link to="/penjual/riwayat-ternak">Riwayat Ternak</Link>
-          <Link to="/penjual/pesanan">Pesanan</Link>
-          <Link to="/penjual/chat">Chat</Link>
-          <Link to="/penjual/laporan-masalah">Laporan Masalah</Link>
-          <Link to="/penjual/profil">Profil</Link>
-        </div>
-
-        <div>
-          <h3>Hubungi Kami</h3>
-          <p>+62 812 3456 7890</p>
-          <p>info@sipera-toraja.com</p>
-          <p>Toraja Utara, Sulawesi Selatan</p>
-        </div>
-
-        <div>
-          <h3>Ikuti Kami</h3>
-          <div className="socials">
-            <span>f</span>
-            <span>◎</span>
-            <span>𝕏</span>
-          </div>
-        </div>
-      </footer>
-    </div>
-  );
+</div>
+);
 }
 
 export default DashboardPenjual;

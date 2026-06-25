@@ -2,16 +2,25 @@ import { useEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import api from "../../api/axiosConfig";
 import "../../styles/pembeli/DashboardPembeli.css";
+import logoSipera from "../../assets/logo-sipera.jpeg";
+import Footer from "../umum/Footer";
+import useAuthStore from "../../store/authStore";
 
 function DashboardPembeli() {
   const navigate = useNavigate();
-
+const logout =
+useAuthStore(
+(state) => state.logout
+);
   const [search, setSearch] = useState("");
   const [kategori, setKategori] = useState("Semua");
   const [dataTernak, setDataTernak] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const loggedInUser = JSON.parse(localStorage.getItem("user"));
+  const loggedInUser =
+  useAuthStore(
+  (state) => state.user
+  );
 
   const formatRupiah = (angka) => {
     return new Intl.NumberFormat("id-ID", {
@@ -28,7 +37,7 @@ function DashboardPembeli() {
       return foto;
     }
 
-    return `http://localhost:5000/uploads/${foto}`;
+    return `${import.meta.env.VITE_API_URL}/uploads/${foto}`;
   };
 
   const fetchTernak = async () => {
@@ -68,31 +77,6 @@ function DashboardPembeli() {
     return cocokSearch && cocokKategori;
   });
 
-  const handlePesan = async (ternakId) => {
-    const konfirmasi = window.confirm(
-      "Apakah Anda yakin ingin memesan ternak ini?"
-    );
-
-    if (!konfirmasi) return;
-
-    try {
-      await api.post("/api/pesanan", {
-        ternakId,
-        jumlah: 1,
-      });
-
-      alert("Pesanan berhasil dibuat.");
-      navigate("/pembeli/transaksi");
-    } catch (error) {
-      console.error("Gagal membuat pesanan:", error);
-      alert(
-        error.response?.data?.message ||
-          error.response?.data?.error ||
-          "Gagal membuat pesanan."
-      );
-    }
-  };
-
   const handleChat = (ternak) => {
     if (!ternak.userId) {
       alert("Data penjual tidak ditemukan.");
@@ -108,23 +92,32 @@ function DashboardPembeli() {
   };
 
   const handleLogout = () => {
+
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     localStorage.removeItem("role");
+
+    logout();
+
     navigate("/login");
   };
 
   return (
     <div className="buyer-dashboard">
-      <nav className="buyer-navbar">
-        <div className="buyer-logo">
-          <div className="buyer-logo-box">S</div>
-          <h2>
-            SIPERA <span>TORAJA</span>
-          </h2>
-        </div>
+      <nav className="app-navbar">
+        <div className="app-logo">
+        <img
+          src={logoSipera}
+          alt="SIPERA Toraja"
+          className="app-logo-image"
+        />
 
-        <div className="buyer-nav-center">
+        <h2>
+          SIPERA <span>TORAJA</span>
+        </h2>
+      </div>
+
+       <div className="app-nav-links">
           <NavLink
             to="/pembeli"
             end
@@ -147,6 +140,10 @@ function DashboardPembeli() {
             Chat
           </NavLink>
 
+          <NavLink to="/pembeli/lapor-masalah">
+          Lapor Masalah
+        </NavLink>
+
           <NavLink
             to="/pembeli/profil"
             className={({ isActive }) => (isActive ? "active" : "")}
@@ -155,52 +152,62 @@ function DashboardPembeli() {
           </NavLink>
         </div>
 
-        <div className="buyer-user">
+        <div className="app-user">
           <div>
             <strong>{loggedInUser?.nama || "Pembeli"}</strong>
             <span>Buyer</span>
           </div>
 
-          <button type="button" className="buyer-logout" onClick={handleLogout}>
-            ↪
-          </button>
+         <button
+          type="button"
+          className="app-logout"
+          onClick={handleLogout}
+        >
+          ↪
+        </button>
         </div>
       </nav>
 
-      <main className="buyer-main">
-        <section className="buyer-header">
-          <div>
-            <h1>Pasar Ternak Toraja</h1>
-            <p>Temukan ternak terbaik untuk kebutuhan adat dan konsumsi Anda.</p>
+      <main className="app-main">
+  <section className="app-page-header">
+        <span className="page-label">
+          Dashboard Pembeli
+        </span>
+
+        <h1>Pasar Ternak Toraja</h1>
+
+        <p>
+          Temukan ternak terbaik untuk kebutuhan adat,
+          konsumsi, dan keperluan adat Toraja.
+        </p>
+
+        <div className="buyer-tools">
+          <div className="search-box">
+            <span>⌕</span>
+            <input
+              type="text"
+              placeholder="Cari jenis kerbau/babi..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
           </div>
 
-          <div className="buyer-tools">
-            <div className="search-box">
-              <span>⌕</span>
-              <input
-                type="text"
-                placeholder="Cari jenis kerbau/babi..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-            </div>
-
-            <div className="filter-tabs">
-              {["Semua", "Kerbau", "Babi", "Kambing", "Ayam", "Sapi"].map(
-                (item) => (
-                  <button
-                    key={item}
-                    type="button"
-                    className={kategori === item ? "active" : ""}
-                    onClick={() => setKategori(item)}
-                  >
-                    {item}
-                  </button>
-                )
-              )}
-            </div>
+          <div className="filter-tabs">
+            {["Semua", "Kerbau", "Babi", "Kambing", "Ayam", "Sapi"].map(
+              (item) => (
+                <button
+                  key={item}
+                  type="button"
+                  className={kategori === item ? "active" : ""}
+                  onClick={() => setKategori(item)}
+                >
+                  {item}
+                </button>
+              )
+            )}
           </div>
-        </section>
+        </div>
+      </section>
 
         <section className="buyer-grid">
           {loading ? (
@@ -253,8 +260,10 @@ function DashboardPembeli() {
                           type="button"
                           className="detail-btn"
                           onClick={(e) => {
+                            e.preventDefault();
                             e.stopPropagation();
-                            handlePesan(ternak.id);
+
+                            navigate(`/pembeli/pemesanan/${ternak.id}`);
                           }}
                         >
                           Pesan
@@ -282,47 +291,11 @@ function DashboardPembeli() {
             </div>
           )}
         </section>
-      </main>
+</main>
 
-      <footer className="buyer-footer">
-        <div className="footer-brand">
-          <div className="buyer-logo">
-            <div className="buyer-logo-box">S</div>
-            <h2>
-              SIPERA <span>TORAJA</span>
-            </h2>
-          </div>
-          <p>
-            Sistem Informasi Penjualan Ternak Toraja. Menghubungkan peternak
-            lokal dengan pembeli secara transparan dan efisien.
-          </p>
-        </div>
+<Footer />
 
-        <div>
-          <h3>Navigasi</h3>
-          <Link to="/pembeli">Beranda</Link>
-          <Link to="/pembeli/transaksi">Transaksi</Link>
-          <Link to="/pembeli/chat">Chat</Link>
-          <Link to="/pembeli/profil">Profil</Link>
-        </div>
-
-        <div>
-          <h3>Hubungi Kami</h3>
-          <p>+62 812 3456 7890</p>
-          <p>info@sipera-toraja.com</p>
-          <p>Toraja Utara, Sulawesi Selatan</p>
-        </div>
-
-        <div>
-          <h3>Ikuti Kami</h3>
-          <div className="socials">
-            <span>f</span>
-            <span>◎</span>
-            <span>𝕏</span>
-          </div>
-        </div>
-      </footer>
-    </div>
+</div>
   );
 }
 

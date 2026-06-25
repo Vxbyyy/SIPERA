@@ -1,121 +1,10 @@
 .buyer-profile-page {
   min-height: 100vh;
   background: #fafafa;
-  font-family: Arial, sans-serif;
   color: #2e2e2e;
 }
 
-/* NAVBAR */
-.buyer-profile-navbar {
-  height: 86px;
-  background: white;
-  border-bottom: 1px solid #e8e8e8;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 42px;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
-
-.buyer-profile-logo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.buyer-profile-logo-box {
-  width: 50px;
-  height: 50px;
-  background: #7f461b;
-  color: white;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 800;
-  font-size: 24px;
-}
-
-.buyer-profile-logo h2 {
-  margin: 0;
-  font-size: 26px;
-}
-
-.buyer-profile-logo span {
-  color: #7f461b;
-}
-
-.buyer-profile-nav-links {
-  display: flex;
-  gap: 14px;
-  align-items: center;
-}
-
-.buyer-profile-nav-links a {
-  text-decoration: none;
-  color: #3d332d;
-  font-size: 18px;
-  font-weight: 700;
-  padding: 12px 22px;
-  border-radius: 999px;
-  transition: 0.25s;
-}
-
-.buyer-profile-nav-links a:hover,
-.buyer-profile-nav-links a.active {
-  background: #7f461b;
-  color: white;
-}
-
-.buyer-profile-user {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  border-left: 1px solid #e4ded8;
-  padding-left: 28px;
-}
-
-.buyer-profile-user div {
-  display: flex;
-  flex-direction: column;
-  text-align: right;
-}
-
-.buyer-profile-user span {
-  color: #7f6d61;
-  font-size: 14px;
-}
-
-.buyer-profile-user button {
-  border: none;
-  background: transparent;
-  color: #7f461b;
-  font-size: 28px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
 /* MAIN */
-.buyer-profile-main {
-  padding: 60px 48px;
-}
-
-.buyer-profile-header {
-  margin-bottom: 40px;
-}
-
-.buyer-profile-header h1 {
-  font-size: 44px;
-  margin: 0 0 10px;
-  color: #171312;
-}
-
-.buyer-profile-header p {
-  font-size: 18px;
-  color: #7f6d61;
-}
 
 .buyer-profile-layout {
   display: grid;
@@ -245,49 +134,17 @@
   background: #5c3213;
 }
 
-@media (max-width: 900px) {
-  .buyer-profile-navbar {
-    height: auto;
-    padding: 20px;
-    flex-direction: column;
-    gap: 18px;
+@media (max-width: 900px){
+
+  .buyer-profile-layout{
+    margin-top:30px;
+    grid-template-columns:1fr;
   }
 
-  .buyer-profile-nav-links {
-    flex-wrap: wrap;
-    justify-content: center;
+  .buyer-profile-grid{
+    grid-template-columns:1fr;
   }
 
-  .buyer-profile-user {
-    border-left: none;
-    padding-left: 0;
-  }
-
-  .buyer-profile-main {
-    padding: 35px 20px;
-  }
-
-  .buyer-profile-layout,
-  .buyer-profile-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .buyer-profile-header h1 {
-    font-size: 34px;
-  }
-  .buyer-profile-view{
-  display:flex;
-  flex-direction:column;
-  gap:16px;
-}
-
-.buyer-profile-cancel-btn{
-  margin-left:12px;
-  background:#999;
-  color:white;
-  border:none;
-  padding:15px 26px;
-  border-radius:12px;
 }
 
 .buyer-profile-view{
@@ -322,4 +179,7 @@
   border-radius:12px;
   cursor:pointer;
 }
+
+.buyer-profile-cancel-btn:hover{
+  background:#777;
 }

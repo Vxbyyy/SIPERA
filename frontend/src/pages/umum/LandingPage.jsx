@@ -6,6 +6,8 @@ import babiImg from "../../assets/babi.jpg";
 import kambingImg from "../../assets/kambing.jpeg";
 import ayamImg from "../../assets/ayam.jpg";
 import rumahImg from "../../assets/hero.jpeg";
+import Footer from "./Footer";
+import logoSipera from "../../assets/logo-sipera.jpeg";
 
 function LandingPage() {
   const daftarTernak = [
@@ -39,26 +41,30 @@ function LandingPage() {
     <div className="landing-page">
       
       {/* ===== NAVBAR ===== */}
-      <header className="navbar">
-        <div className="logo">
-          <div className="logo-box">S</div>
-          <h2>
-            SIPERA <span>TORAJA</span>
-          </h2>
-        </div>
+      <header className="app-navbar">
+      <div className="app-logo">
+        <img
+          src={logoSipera}
+          alt="Logo SIPERA"
+          className="app-logo-image"
+        />
 
-        <nav>
+        <h2>
+          SIPERA <span>TORAJA</span>
+        </h2>
+      </div>
+
+        <nav className="app-nav-links">
           <Link to="/" className="active">Beranda</Link>
           <Link to="/login">Masuk</Link>
-          <Link to="/register" className="register-btn">
-          
+          <Link to="/register">
             Daftar
           </Link>
         </nav>
       </header>
 
       {/* ===== HERO ===== */}
-      <section className="hero-section">
+      <section className="hero-section" id="beranda">
         <div className="hero-left">
           <span className="badge">WARISAN BUDAYA TORAJA</span>
 
@@ -114,7 +120,7 @@ function LandingPage() {
       </section>
 
       {/* ===== DAFTAR TERNAK ===== */}
-      <section className="animal-section">
+      <section className="animal-section" id="katalog">
         <div className="section-title">
           <h2>Daftar Hewan Ternak</h2>
           <p>
@@ -142,7 +148,7 @@ function LandingPage() {
       </section>
 
 {/* ===== INFO ===== */}
-<section className="info-section">
+<section className="info-section" id="tentang">
 
   <div className="info-card">
     <div className="info-icon">🐃</div>
@@ -166,44 +172,17 @@ function LandingPage() {
       <li>Lihat detail dan harga ternak</li>
       <li>Login atau registrasi akun</li>
       <li>Lakukan pemesanan melalui dashboard</li>
-      <li>Penjual akan memproses transaksi</li>
+      <li>Penjual akan memproses pesanan</li>
     </ul>
   </div>
 
 </section>
 
-      {/* ===== FOOTER ===== */}
-      <footer className="footer">
-        <div className="footer-brand">
-          <h2>
-            SIPERA <span>TORAJA</span>
-          </h2>
+{/* ===== FOOTER ===== */}
+<Footer />
 
-          <p>
-            Sistem Informasi Penjualan Ternak Toraja yang membantu peternak
-            dan pembeli secara transparan dan efisien.
-          </p>
-        </div>
-
-        <div className="footer-links">
-          <h3>Navigasi</h3>
-
-          <a href="/">Beranda</a>
-          <a href="/">Pasar Kerbau</a>
-          <a href="/">Pasar Babi</a>
-          <a href="/">Tentang Kami</a>
-        </div>
-
-        <div className="footer-contact">
-          <h3>Hubungi Kami</h3>
-
-          <p>+62 812 3456 7890</p>
-          <p>info@sipera-toraja.com</p>
-          <p>Toraja Utara, Sulawesi Selatan</p>
-        </div>
-      </footer>
-    </div>
-  );
+</div>
+);
 }
 
 export default LandingPage;

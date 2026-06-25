@@ -1,148 +1,127 @@
 .seller-dashboard {
   min-height: 100vh;
-  background: #fafafa;
-  font-family: Arial, sans-serif;
+  background: #fefdfd;
   color: #2e2e2e;
 }
 
-/* NAVBAR */
-.seller-navbar {
-  height: 86px;
-  background: white;
-  border-bottom: 1px solid #e8e8e8;
+.seller-dashboard,
+.seller-chat-page,
+.seller-order-page,
+.seller-profile-page,
+.riwayat-page,
+.lapor-page {
+  min-height: 100vh;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 42px;
-  position: sticky;
-  top: 0;
-  z-index: 10;
+  flex-direction: column;
 }
 
-.seller-logo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.seller-logo-box {
-  width: 50px;
-  height: 50px;
-  background: #7f461b;
-  color: white;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 800;
-  font-size: 24px;
+.app-main,
+.seller-main,
+.seller-chat-main,
+.seller-order-main,
+.seller-profile-main,
+.riwayat-container,
+.lapor-main {
+  flex: 1;
 }
 
 .seller-logo h2 {
   margin: 0;
-  font-size: 26px;
+  font-size: 28px;
+  font-weight: 800;
 }
 
 .seller-logo h2 span {
   color: #7f461b;
+
 }
 
-.seller-nav-links {
-  display: flex;
-  gap: 14px;
-  align-items: center;
-}
-
-.seller-nav-links a {
-  text-decoration: none;
-  color: #3d332d;
-  font-size: 18px;
-  font-weight: 700;
-  padding: 12px 22px;
-  border-radius: 999px;
-  transition: 0.25s;
-}
-
-.seller-nav-links a:hover,
-.seller-nav-links a.active {
-  background: #7f461b;
-  color: white;
-}
-
-.seller-user {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  border-left: 1px solid #e4ded8;
-  padding-left: 28px;
-}
-
-.seller-user div {
-  display: flex;
-  flex-direction: column;
-  text-align: right;
-}
-
-.seller-user strong {
-  font-size: 16px;
-}
-
-.seller-user span {
-  color: #7f6d61;
-  font-size: 14px;
-}
-
-.seller-logout {
-  text-decoration: none;
-  color: #7f461b;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-/* MAIN */
+/* =========================
+   MAIN
+========================= */
 .seller-main {
-  padding: 60px 48px;
+  padding: 50px;
 }
 
-.seller-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 55px;
-}
+.seller-header .add-button{
+  margin-top:20px;
 
-.seller-header h1 {
-  font-size: 44px;
-  margin-bottom: 10px;
-  color: #171312;
-}
+  padding:14px 24px;
 
-.seller-header p {
-  color: #7f6d61;
-  font-size: 18px;
+  font-size:16px;
 }
-
+/* =========================
+   BUTTON TAMBAH
+========================= */
 .add-button {
-  background: #7f461b;
+  background: linear-gradient(
+    135deg,
+    #7f461b,
+    #9a5a28
+  );
+
   color: white;
   text-decoration: none;
-  padding: 18px 34px;
-  border-radius: 14px;
-  font-weight: 800;
-  font-size: 18px;
+
+  padding: 16px 32px;
+
+  border-radius: 16px;
+
+  font-size: 17px;
+  font-weight: 700;
+
+  transition: .3s;
+  display:inline-flex;
+  justify-content:center;
+  align-items:center;
+
+  box-shadow:
+    0 10px 25px rgba(
+      127,
+      70,
+      27,
+      0.25
+    );
 }
 
 .add-button:hover {
-  background: #5c3213;
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 16px 30px rgba(
+      127,
+      70,
+      27,
+      0.35
+    );
 }
 
-/* TABLE */
+@media (max-width:768px){
+
+  .add-button{
+    width:100%;
+  }
+}
+
+/* =========================
+   TABLE CARD
+========================= */
 .seller-table-card {
   background: white;
-  border-radius: 18px;
+
+  border-radius: 24px;
+
   overflow: hidden;
-  border: 1px solid #ece7e2;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+
+  border: none;
+
+  box-shadow:
+    0 20px 45px rgba(
+      0,
+      0,
+      0,
+      0.06
+    );
 }
 
 .seller-table-card table {
@@ -151,169 +130,146 @@
 }
 
 .seller-table-card thead {
-  background: #fbfaf9;
+  background: linear-gradient(
+    135deg,
+    #7f461b,
+    #9a5a28
+  );
 }
 
 .seller-table-card th {
-  text-align: left;
-  padding: 24px 32px;
-  color: #6b5d55;
-  font-size: 15px;
+  color: white;
+
+  padding: 22px 28px;
+
+  font-size: 14px;
+  font-weight: 700;
+
   text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .seller-table-card td {
-  padding: 24px 32px;
-  border-top: 1px solid #eee8e3;
-  font-size: 17px;
+  padding: 22px 28px;
+
+  border-top: 1px solid #f0ebe8;
+
   vertical-align: middle;
+
+  font-size: 16px;
 }
 
-.ternak-name {
-  font-weight: 800;
-  color: #111;
+.seller-table-card tbody tr {
+  transition: .25s;
 }
 
-.price {
-  color: #7f461b;
-  font-weight: 800;
+.seller-table-card tbody tr:hover {
+  background: #fcfaf8;
 }
 
-.status-badge {
-  background: #d9fbe8;
-  color: #0a8f3c;
-  padding: 8px 16px;
-  border-radius: 999px;
-  font-weight: 800;
-  font-size: 14px;
-  display: inline-block;
-}
-
-.aksi {
-  text-align: right !important;
-  white-space: nowrap;
-}
-
-.edit-icon,
-.delete-icon {
-  border: none;
-  background: transparent;
-  text-decoration: none;
-  font-size: 22px;
-  cursor: pointer;
-  margin-left: 18px;
-}
-
-.edit-icon {
-  color: #7f461b;
-}
-
-.delete-icon {
-  color: #c51f1f;
-}
-
-/* FOTO TERNAK */
+/* =========================
+   FOTO
+========================= */
 .ternak-photo {
-  width: 90px;
-  height: 70px;
+  width: 82px;
+  height: 82px;
+
   object-fit: cover;
-  border-radius: 12px;
-  border: 1px solid #e8e0da;
+
+  border-radius: 16px;
+
   display: block;
-  background: #f3ece7;
+
+  box-shadow:
+    0 6px 15px rgba(
+      0,
+      0,
+      0,
+      0.12
+    );
 }
 
 .ternak-photo-placeholder {
-  width: 90px;
-  height: 70px;
-  border-radius: 12px;
+  width: 82px;
+  height: 82px;
+
+  border-radius: 16px;
+
   background: #f3ece7;
+
   color: #7f461b;
-  border: 1px dashed #c8b4a5;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   font-size: 12px;
   font-weight: 700;
 }
 
-/* FOOTER */
-.seller-footer {
-  background: #171312;
-  color: white;
-  padding: 75px 46px 55px;
-  display: grid;
-  grid-template-columns: 1.6fr 1fr 1.4fr 1fr;
-  gap: 55px;
+/* =========================
+   TEXT
+========================= */
+.ternak-name {
+  font-weight: 800;
+  color: #111;
+  font-size: 18px;
 }
 
-.seller-footer h3 {
-  color: white;
-  font-size: 24px;
-  margin-bottom: 28px;
-}
-
-.seller-footer p,
-.seller-footer a {
-  color: #d0c9c4;
-  line-height: 1.7;
-  font-size: 17px;
-  text-decoration: none;
-}
-
-.seller-footer a {
-  display: block;
-  margin-bottom: 14px;
-}
-
-.footer-brand p {
-  margin-top: 28px;
-  max-width: 380px;
-}
-
-.socials {
-  display: flex;
-  gap: 18px;
-}
-
-.socials span {
-  width: 50px;
-  height: 50px;
-  background: #29231f;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
+.price {
+  color: #16a34a;
   font-size: 22px;
+  font-weight: 800;
 }
 
-/* ACTION ICON BUTTONS */
+.status-badge {
+  background: #dcfce7;
+  color: #15803d;
+
+  padding: 10px 18px;
+
+  border-radius: 999px;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* =========================
+   AKSI
+========================= */
+.aksi {
+  text-align: center !important;
+}
+
 .action-icon-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 28px;
+  gap: 12px;
 }
 
 .action-icon-btn {
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
+  width: 44px;
+  height: 44px;
+
   border: none;
-  text-decoration: none;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
+
+  border-radius: 14px;
+
+  display: flex;
   justify-content: center;
-  font-size: 17px;
-  transition: 0.25s;
+  align-items: center;
+
+  text-decoration: none;
+
+  cursor: pointer;
+
+  transition: all 0.25s ease;
 }
 
 .edit-icon-btn {
-  background: #f3ece7;
+  background: #f7efe9;
   color: #7f461b;
-  border: 1px solid #e0d2c8;
 }
 
 .edit-icon-btn:hover {
@@ -323,60 +279,118 @@
 }
 
 .delete-icon-btn {
-  background: #fff0f0;
-  color: #c51f1f;
-  border: 1px solid #ffd0d0;
+  background: #fff1f1;
+  color: #dc2626;
 }
 
 .delete-icon-btn:hover {
-  background: #c51f1f;
+  background: #dc2626;
   color: white;
   transform: translateY(-2px);
 }
 
-/* RESPONSIVE */
-@media (max-width: 900px) {
-  .seller-navbar {
-    height: auto;
-    padding: 20px;
-    flex-direction: column;
-    gap: 18px;
-  }
 
-  .seller-nav-links {
-    flex-wrap: wrap;
-    justify-content: center;
-  }
+.footer-nav{
+  min-width:220px;
+}
+
+.footer-contact{
+  min-width:220px;
+  text-align:right;
+}
+
+.seller-footer h3 {
+  margin-bottom: 20px;
+  font-size: 22px;
+}
+
+.seller-footer p,
+.seller-footer a {
+  color: #cfc7c2;
+  text-decoration: none;
+  line-height: 1.8;
+}
+
+.seller-footer a:hover {
+  color: white;
+}
+
+.footer-brand p {
+  margin-top: 22px;
+  max-width: 400px;
+}
+
+.socials {
+  display: flex;
+  gap: 12px;
+}
+
+.socials span {
+  width: 44px;
+  height: 44px;
+
+  background: #29231f;
+
+  border-radius: 50%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  transition: .25s;
+}
+
+.socials span:hover {
+  background: #7f461b;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 900px) {
 
   .seller-user {
     border-left: none;
     padding-left: 0;
   }
 
-  .seller-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 25px;
-  }
-
   .seller-main {
-    padding: 35px 20px;
+    padding: 30px 18px;
   }
 
-  .seller-table-card {
-    overflow-x: auto;
+  .seller-table-card{
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
   }
 
-  .seller-table-card table {
-    min-width: 950px;
+  .seller-table-card table{
+    min-width:700px;
   }
 
   .seller-footer {
     grid-template-columns: 1fr;
   }
+}
 
-  .action-icon-wrapper {
-    justify-content: center;
-    gap: 22px;
+@media (max-width:768px){
+
+  .seller-table-card th,
+  .seller-table-card td{
+    padding:12px;
+    font-size:14px;
+  }
+
+  .ternak-photo{
+    width:60px;
+    height:60px;
+  }
+
+  .price{
+    font-size:16px;
+  }
+
+  .status-badge{
+    padding:6px 10px;
+    font-size:12px;
   }
 }

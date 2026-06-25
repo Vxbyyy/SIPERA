@@ -6,6 +6,7 @@ const {
   getAllLaporan,
   balasLaporan,
   getLaporanUser,
+  balasKembaliUser,
 } = require("../controllers/laporanController");
 
 // tambah laporan
@@ -17,7 +18,10 @@ router.get("/", getAllLaporan);
 // laporan milik user
 router.get("/user/:userId", getLaporanUser);
 
-// balas laporan admin
+// admin membalas
 router.patch("/:id/balas", balasLaporan);
+
+// user membalas kembali
+router.patch("/:id/balas-user", balasKembaliUser);
 
 module.exports = router;

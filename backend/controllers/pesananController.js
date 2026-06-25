@@ -40,11 +40,40 @@ exports.getPesananPembeli = async (req, res) => {
   }
 };
 
+// GET detail pesanan berdasarkan ID
+exports.getPesananById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const pesanan = await Pesanan.findByPk(id);
+
+    if (!pesanan) {
+      return res.status(404).json({
+        message: "Pesanan tidak ditemukan",
+      });
+    }
+
+    res.status(200).json(pesanan);
+  } catch (error) {
+    res.status(500).json({
+      message: "Gagal mengambil detail pesanan",
+      error: error.message,
+    });
+  }
+};
+
 // POST pembeli membuat pesanan
 exports.createPesanan = async (req, res) => {
   try {
+    console.log("BODY:", req.body);
+    console.log("USER:", req.user);
+
     const pembeliId = req.user.id;
-    const { ternakId, jumlah } = req.body;
+    const {
+  ternakId,
+  jumlah,
+  metodePembayaran,
+} = req.body;
 
     if (!ternakId || !jumlah) {
       return res.status(400).json({
@@ -70,16 +99,26 @@ exports.createPesanan = async (req, res) => {
 
     const total = Number(ternak.harga) * Number(jumlah);
 
-    const pesanan = await Pesanan.create({
+
+        const pesanan = await Pesanan.create({
       pembeliId,
       penjualId: ternak.userId,
       ternakId: ternak.id,
+
       namaPembeli: pembeli?.nama || "Pembeli",
       namaTernak: ternak.nama,
+
       jumlah,
       total,
-      status: "Menunggu",
+
+      metodePembayaran,
+
+      status:
+        metodePembayaran === "Transfer"
+          ? "Sudah Dibayar"
+          : "Menunggu",
     });
+    console.log("METODE:", metodePembayaran);
 
     res.status(201).json({
       message: "Pesanan berhasil dibuat",
@@ -100,7 +139,9 @@ exports.updateStatusPesanan = async (req, res) => {
     const { id } = req.params;
     const { status } = req.body;
 
-    if (!["Menunggu", "Diproses", "Selesai", "Dibatalkan"].includes(status)) {
+    if (
+      !["Menunggu", "Diproses", "Selesai", "Dibatalkan"].includes(status)
+    ) {
       return res.status(400).json({
         message: "Status tidak valid",
       });
@@ -120,6 +161,7 @@ exports.updateStatusPesanan = async (req, res) => {
     }
 
     pesanan.status = status;
+
     await pesanan.save();
 
     res.status(200).json({

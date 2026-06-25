@@ -68,9 +68,10 @@ exports.getLaporanUser = async (req, res) => {
   }
 };
 
-// BALAS LAPORAN
+// BALAS ADMIN
 exports.balasLaporan = async (req, res) => {
   try {
+
     const { id } = req.params;
     const { balasan, status } = req.body;
 
@@ -82,17 +83,58 @@ exports.balasLaporan = async (req, res) => {
       });
     }
 
-    laporan.balasan = balasan;
-    laporan.status = status || "Selesai";
+    if (balasan !== undefined) {
+      laporan.balasan = balasan;
+    }
+
+    if (status !== undefined) {
+      laporan.status = status;
+    }
 
     await laporan.save();
 
     res.status(200).json({
-      message: "Balasan berhasil dikirim",
+      message: "Laporan berhasil diperbarui",
+      laporan,
+    });
+
+  } catch (error) {
+
+    console.error(error);
+
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+// USER BALAS KEMBALI
+exports.balasKembaliUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { balasanUser } = req.body;
+
+    const laporan = await Laporan.findByPk(id);
+
+    if (!laporan) {
+      return res.status(404).json({
+        message: "Laporan tidak ditemukan",
+      });
+    }
+
+    laporan.balasanUser = balasanUser;
+
+    // status kembali menunggu admin
+    laporan.status = "Menunggu";
+
+    await laporan.save();
+
+    res.status(200).json({
+      message: "Balasan user berhasil dikirim",
       laporan,
     });
   } catch (error) {
-    console.error("ERROR BALAS:", error);
+    console.error(error);
 
     res.status(500).json({
       message: error.message,

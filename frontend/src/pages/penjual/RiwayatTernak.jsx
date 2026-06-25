@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import api from "../../api/axiosConfig";
 import "../../styles/penjual/RiwayatTernak.css";
+import logoSipera from "../../assets/logo-sipera.jpeg";
+import Footer from "../umum/Footer";
 
 function RiwayatTernak() {
   const navigate = useNavigate();
@@ -37,7 +39,7 @@ function RiwayatTernak() {
       return foto;
     }
 
-    return `http://localhost:5000/uploads/${foto}`;
+   return `${import.meta.env.VITE_API_URL}/uploads/${foto}`;
   };
 
   const getStatusTernak = (stok) => {
@@ -97,15 +99,20 @@ function RiwayatTernak() {
 
   return (
     <div className="riwayat-page">
-      <nav className="riwayat-navbar">
-        <div className="riwayat-logo">
-          <div className="riwayat-logo-box">S</div>
-          <h2>
-            SIPERA <span>TORAJA</span>
-          </h2>
-        </div>
+      <nav className="app-navbar">
+        <div className="app-logo">
+        <img
+          src={logoSipera}
+          alt="Logo SIPERA"
+          className="app-logo-image"
+        />
 
-        <div className="riwayat-nav-links">
+        <h2>
+          SIPERA <span>TORAJA</span>
+        </h2>
+      </div>
+
+        <div className="app-nav-links">
           <NavLink
             to="/penjual"
             end
@@ -136,6 +143,15 @@ function RiwayatTernak() {
           </NavLink>
 
           <NavLink
+            to="/penjual/lapor-masalah"
+            className={({ isActive }) =>
+              isActive ? "active" : ""
+            }
+          >
+            Laporan
+          </NavLink>
+
+          <NavLink
             to="/penjual/profil"
             className={({ isActive }) => (isActive ? "active" : "")}
           >
@@ -143,28 +159,36 @@ function RiwayatTernak() {
           </NavLink>
         </div>
 
-        <div className="riwayat-user">
+        <div className="app-user">
           <div>
             <strong>{loggedInUser?.nama || "Penjual"}</strong>
             <span>Seller</span>
           </div>
 
-          <button type="button" onClick={handleLogout}>
+          <button
+            type="button"
+            className="app-logout"
+            onClick={handleLogout}
+          >
             ↪
           </button>
         </div>
       </nav>
 
-      <div className="riwayat-container">
-        <div className="riwayat-header">
-          <div className="riwayat-header-text">
-            <span className="page-label">Riwayat Penjual</span>
-            <h1>Riwayat Ternak</h1>
-            <p>
-              Kelola dan pantau semua data ternak yang pernah Anda tambahkan.
-            </p>
-          </div>
-        </div>
+      <main className="app-main">
+      <section className="app-page-header">
+
+        <span className="app-page-label">
+          Dashboard Penjual
+        </span>
+
+        <h1>Riwayat Ternak</h1>
+
+        <p>
+          Kelola dan pantau semua data ternak yang pernah Anda tambahkan.
+        </p>
+
+      </section>
 
         <div className="summary">
           <div className="summary-card">
@@ -243,100 +267,120 @@ function RiwayatTernak() {
                 );
               })
             ) : (
-              <div className="empty-history">
-                Belum ada data ternak milik Anda yang tersimpan di database.
-              </div>
+             <div className="empty-history"></div>
             )}
           </div>
         </div>
+      
 
         {selectedTernak && (
-          <div
-            className="modal-overlay"
-            onClick={() => setSelectedTernak(null)}
-          >
-            <div className="detail-card" onClick={(e) => e.stopPropagation()}>
-              <button
-                type="button"
-                className="close-btn"
-                onClick={() => setSelectedTernak(null)}
-              >
-                <i className="fas fa-times"></i>
-              </button>
 
-              {getFotoTernak(selectedTernak.foto) ? (
-                <img
-                  src={getFotoTernak(selectedTernak.foto)}
-                  alt={selectedTernak.nama}
-                  className="detail-img"
-                />
-              ) : (
-                <div className="detail-img-placeholder">No Image</div>
-              )}
+  <div
+    className="modal-overlay"
+    onClick={() => setSelectedTernak(null)}
+  >
+    <div
+      className="detail-card"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <button
+        type="button"
+        className="close-btn"
+        onClick={() => setSelectedTernak(null)}
+      >
+        <i className="fas fa-times"></i>
+      </button>
 
-              <div className="detail-content">
-                <span className="page-label">Detail Ternak</span>
-                <h2>{selectedTernak.nama}</h2>
-                <p className="detail-desc">
-                  {selectedTernak.deskripsi || "Belum ada deskripsi ternak."}
-                </p>
+  {getFotoTernak(selectedTernak.foto) ? (
+    <img
+      src={getFotoTernak(selectedTernak.foto)}
+      alt={selectedTernak.nama}
+      className="detail-img"
+    />
+  ) : (
+    <div className="detail-img-placeholder">
+      No Image
+    </div>
+  )}
 
-                <div className="detail-info-grid">
-                  <div>
-                    <span>Jenis</span>
-                    <strong>{selectedTernak.jenis || "-"}</strong>
-                  </div>
+  <div className="detail-content">
+    <span className="page-label">
+      Detail Ternak
+    </span>
 
-                  <div>
-                    <span>Harga</span>
-                    <strong>{formatRupiah(selectedTernak.harga)}</strong>
-                  </div>
+    <h2>{selectedTernak.nama}</h2>
 
-                  <div>
-                    <span>Usia</span>
-                    <strong>{selectedTernak.usia || "-"}</strong>
-                  </div>
+    <div className="detail-price">
+    {formatRupiah(selectedTernak.harga)}
+  </div>
+  
+    <p className="detail-desc">
+      {selectedTernak.deskripsi ||
+        "Belum ada deskripsi ternak."}
+    </p>
 
-                  <div>
-                    <span>Kondisi</span>
-                    <strong>{selectedTernak.kondisi || "-"}</strong>
-                  </div>
+    <div className="detail-info-grid">
 
-                  <div>
-                    <span>Stok Awal</span>
-                    <strong>{selectedTernak.stok || 0}</strong>
-                  </div>
-
-                  <div>
-                    <span>Stok Tersisa</span>
-                    <strong>{selectedTernak.stok || 0}</strong>
-                  </div>
-
-                  <div>
-                    <span>Status</span>
-                    <strong>{getStatusTernak(selectedTernak.stok)}</strong>
-                  </div>
-
-                  <div>
-                    <span>Lokasi</span>
-                    <strong>{selectedTernak.lokasi || "-"}</strong>
-                  </div>
-
-                  <div>
-                    <span>Tanggal Ditambahkan</span>
-                    <strong>{formatTanggal(selectedTernak.createdAt)}</strong>
-                  </div>
-
-                  <div>
-                    <span>ID Penjual</span>
-                    <strong>{selectedTernak.userId || "-"}</strong>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
+      <div>
+        <span>Jenis</span>
+        <strong>{selectedTernak.jenis || "-"}</strong>
       </div>
+
+      <div>
+        <span>Harga</span>
+        <strong>
+          {formatRupiah(selectedTernak.harga)}
+        </strong>
+      </div>
+
+      <div>
+        <span>Usia</span>
+        <strong>{selectedTernak.usia || "-"}</strong>
+      </div>
+
+      <div>
+        <span>Kondisi</span>
+        <strong>{selectedTernak.kondisi || "-"}</strong>
+      </div>
+
+      <div>
+        <span>Stok</span>
+        <strong>{selectedTernak.stok || 0}</strong>
+      </div>
+
+      <div>
+        <span>Status</span>
+        <strong>
+          {getStatusTernak(selectedTernak.stok)}
+        </strong>
+      </div>
+
+      <div>
+        <span>Lokasi</span>
+        <strong>
+          {selectedTernak.lokasi || "-"}
+        </strong>
+      </div>
+
+      <div>
+        <span>Tanggal Ditambahkan</span>
+        <strong>
+          {formatTanggal(
+            selectedTernak.createdAt
+          )}
+        </strong>
+      </div>
+    </div>
+  </div>
+</div>
+
+  </div>
+)}
+
+</main>
+
+ <Footer />
+
     </div>
   );
 }

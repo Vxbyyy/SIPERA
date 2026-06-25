@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import api from "../../api/axiosConfig";
 import "../../styles/pembeli/DetailPemesanan.css";
+import logoSipera from "../../assets/logo-sipera.jpeg";
 
 function DetailPemesanan() {
   const { id } = useParams();
@@ -40,7 +41,7 @@ function DetailPemesanan() {
       return foto;
     }
 
-    return `http://localhost:5000/uploads/${foto}`;
+    return `${import.meta.env.VITE_API_URL}/uploads/${foto}`;
   };
 
   const fetchDetailTernak = async () => {
@@ -52,7 +53,7 @@ function DetailPemesanan() {
     } catch (error) {
       console.error("Gagal mengambil detail ternak:", error);
       alert("Gagal mengambil detail ternak.");
-      navigate("/pembeli/dashboard");
+      navigate("/pembeli");
     } finally {
       setLoading(false);
     }
@@ -69,87 +70,70 @@ function DetailPemesanan() {
   
 
   const handleBuatPesanan = async () => {
-    if (!ternak) return;
+  if (!ternak) return;
 
-    if (!namaPenerima.trim()) {
-      alert("Nama penerima wajib diisi.");
-      return;
-    }
+  if (!namaPenerima.trim()) {
+    alert("Nama penerima wajib diisi.");
+    return;
+  }
 
-    if (!noTelepon.trim()) {
-      alert("Nomor telepon wajib diisi.");
-      return;
-    }
+  if (!noTelepon.trim()) {
+    alert("Nomor telepon wajib diisi.");
+    return;
+  }
 
-    if (!alamatUtama.trim()) {
-      alert("Alamat utama wajib diisi.");
-      return;
-    }
+  if (!alamatUtama.trim()) {
+    alert("Alamat utama wajib diisi.");
+    return;
+  }
 
-    if (!detailAlamat.trim()) {
-      alert("Detail alamat wajib diisi.");
-      return;
-    }
+  if (!detailAlamat.trim()) {
+    alert("Detail alamat wajib diisi.");
+    return;
+  }
 
-    if (
-      metodePembayaran === "Transfer" &&
-      !ternak?.penjual?.nomorRekening
-    ) {
-      alert(
-        "Penjual belum mengisi nomor rekening. Silakan pilih COD atau hubungi penjual."
-      );
-      return;
-    }
+  const konfirmasi = window.confirm(
+    "Apakah Anda yakin ingin membuat pesanan?"
+  );
 
-    if (metodePembayaran === "Transfer" && !buktiTransfer) {
-      alert("Bukti transfer wajib diupload jika memilih metode Transfer.");
-      return;
-    }
+  if (!konfirmasi) return;
 
-    const konfirmasi = window.confirm("Apakah Anda yakin ingin membuat pesanan?");
+  try {
+    setSaving(true);
 
-    if (!konfirmasi) return;
+     const payload = {
+    ternakId: ternak.id,
+    jumlah,
+    metodePembayaran,
+};
 
-    try {
-      setSaving(true);
+    console.log("PAYLOAD:", payload);
 
-      const formData = new FormData();
+    const response = await api.post(
+      "/api/pesanan",
+      payload
+    );
 
-      formData.append("ternakId", ternak.id);
-      formData.append("jumlah", jumlah);
-      formData.append("metodePembayaran", metodePembayaran);
+    console.log(response.data);
 
-      formData.append("namaPenerima", namaPenerima);
-      formData.append("noTelepon", noTelepon);
-      formData.append("alamatPengiriman", alamatUtama);
-      formData.append("detailAlamat", detailAlamat);
-      formData.append("jadikanDefault", jadikanDefault);
+    alert("Pesanan berhasil dibuat");
 
-      formData.append("catatan", catatan);
+    navigate("/pembeli/transaksi");
 
-      if (buktiTransfer) {
-        formData.append("buktiTransfer", buktiTransfer);
-      }
+  } catch (error) {
 
-      await api.post("/api/pesanan", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+    console.error(error);
 
-      alert("Pesanan berhasil dibuat.");
-      navigate("/pembeli/transaksi");
-    } catch (error) {
-      console.error("Gagal membuat pesanan:", error);
-      alert(
-        error.response?.data?.message ||
-          error.response?.data?.error ||
-          "Gagal membuat pesanan."
-      );
-    } finally {
-      setSaving(false);
-    }
-  };
+    alert(
+      error.response?.data?.message ||
+      error.response?.data?.error ||
+      "Gagal membuat pesanan"
+    );
+
+  } finally {
+    setSaving(false);
+  }
+};
 
   const handleResetAlamat = () => {
     setNamaPenerima("");
@@ -193,32 +177,42 @@ function DetailPemesanan() {
 
   return (
     <div className="order-detail-page">
-      <nav className="order-navbar">
-        <div className="order-logo">
-          <div className="order-logo-box">S</div>
-          <h2>
-            SIPERA <span>TORAJA</span>
-          </h2>
-        </div>
+      <nav className="app-navbar">
+        <div className="app-logo">
+        <img
+          src={logoSipera}
+          alt="SIPERA Toraja"
+          className="app-logo-image"
+        />
 
-        <div className="order-nav-links">
+        <h2>
+          SIPERA <span>TORAJA</span>
+        </h2>
+      </div>
+
+        <div className="app-nav-links">
           <NavLink to="/pembeli" end>
             Beranda
           </NavLink>
           <NavLink to="/pembeli/transaksi">Transaksi</NavLink>
           <NavLink to="/pembeli/chat">Chat</NavLink>
+          <NavLink to="/pembeli/lapor-masalah">Lapor Masalah</NavLink>
           <NavLink to="/pembeli/profil">Profil</NavLink>
         </div>
 
-        <div className="order-user">
+        <div className="app-user">
           <div>
             <strong>{loggedInUser?.nama || "Pembeli"}</strong>
             <span>Buyer</span>
           </div>
 
-          <button type="button" onClick={handleLogout}>
-            ↪
-          </button>
+<button
+  type="button"
+  className="app-logout"
+  onClick={handleLogout}
+>
+  ↪
+</button>
         </div>
       </nav>
 

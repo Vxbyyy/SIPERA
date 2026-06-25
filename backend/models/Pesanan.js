@@ -38,8 +38,21 @@ const Pesanan = db.define("Pesanan", {
     allowNull: false,
   },
 
+  metodePembayaran: {
+    type: DataTypes.ENUM("COD", "Transfer"),
+    allowNull: false,
+    defaultValue: "COD",
+  },
+
   status: {
-    type: DataTypes.ENUM("Menunggu", "Diproses", "Selesai", "Dibatalkan"),
+    type: DataTypes.ENUM(
+      "Menunggu",
+      "Sudah Dibayar",
+      "Diproses",
+      "Selesai",
+      "Dibatalkan"
+    ),
+    allowNull: false,
     defaultValue: "Menunggu",
   },
 });

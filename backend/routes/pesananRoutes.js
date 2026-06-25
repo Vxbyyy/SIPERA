@@ -4,11 +4,15 @@ const router = express.Router();
 const {
   getPesananPenjual,
   getPesananPembeli,
+  getPesananById,
   createPesanan,
   updateStatusPesanan,
 } = require("../controllers/pesananController");
 
-const { verifyToken, allowRoles } = require("../middleware/authMiddleware");
+const {
+  verifyToken,
+  allowRoles,
+} = require("../middleware/authMiddleware");
 
 // Penjual melihat pesanan masuk
 router.get(
@@ -18,12 +22,19 @@ router.get(
   getPesananPenjual
 );
 
-// Pembeli melihat transaksi/pesanan miliknya
+// Pembeli melihat transaksi miliknya
 router.get(
   "/pembeli",
   verifyToken,
   allowRoles("pembeli"),
   getPesananPembeli
+);
+
+// Detail pesanan
+router.get(
+  "/:id",
+  verifyToken,
+  getPesananById
 );
 
 // Pembeli membuat pesanan

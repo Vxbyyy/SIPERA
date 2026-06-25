@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import api from "../../api/axiosConfig";
 import "../../styles/penjual/EditTernak.css";
+import logoSipera from "../../assets/logo-sipera.jpeg";
 
 function EditTernak() {
   const navigate = useNavigate();
@@ -32,7 +33,7 @@ function EditTernak() {
       return namaFoto;
     }
 
-    return `http://localhost:5000/uploads/${namaFoto}`;
+    return `${import.meta.env.VITE_API_URL}/uploads/${namaFoto}`;
   };
 
   const fetchDetailTernak = async () => {
@@ -144,50 +145,77 @@ function EditTernak() {
 
   return (
     <div className="edit-ternak-page">
-      <nav className="edit-ternak-navbar">
-        <div className="edit-ternak-logo">
-          <div className="edit-ternak-logo-box">S</div>
-          <h2>
-            SIPERA <span>TORAJA</span>
-          </h2>
-        </div>
+     <nav className="app-navbar">
 
-        <div className="edit-ternak-nav-links">
-          <NavLink to="/penjual" end>
-            Beranda
-          </NavLink>
+  <div className="app-logo">
+    <img
+      src={logoSipera}
+      alt="SIPERA Toraja"
+      className="app-logo-image"
+    />
 
-          <NavLink to="/penjual/riwayat-ternak">Riwayat Ternak</NavLink>
+    <h2>
+      SIPERA <span>TORAJA</span>
+    </h2>
+  </div>
 
-          <NavLink to="/penjual/pesanan">Pesanan</NavLink>
+  <div className="app-nav-links">
+    <NavLink to="/penjual" end>
+      Beranda
+    </NavLink>
 
-          <NavLink to="/penjual/chat">Chat</NavLink>
+    <NavLink to="/penjual/riwayat-ternak">
+      Riwayat Ternak
+    </NavLink>
 
-          <NavLink to="/penjual/profil">Profil</NavLink>
-        </div>
+    <NavLink to="/penjual/pesanan">
+      Pesanan
+    </NavLink>
 
-        <div className="edit-ternak-user">
-          <div>
-            <strong>{loggedInUser?.nama || "Penjual"}</strong>
-            <span>Seller</span>
-          </div>
+    <NavLink to="/penjual/chat">
+      Chat
+    </NavLink>
 
-          <button type="button" onClick={handleLogout}>
-            ↪
-          </button>
-        </div>
-      </nav>
+    <NavLink to="/penjual/lapor-masalah">
+      Laporan
+    </NavLink>
+
+    <NavLink to="/penjual/profil">
+      Profil
+    </NavLink>
+  </div>
+
+  <div className="app-user">
+    <div>
+      <strong>{loggedInUser?.nama || "Penjual"}</strong>
+      <span>Seller</span>
+    </div>
+
+    <button
+      type="button"
+      className="app-logout"
+      onClick={handleLogout}
+    >
+      ↪
+    </button>
+  </div>
+
+</nav>
 
       <main className="edit-ternak-main">
-        <section className="edit-ternak-header">
-          <div>
-            <span>Edit Data Ternak</span>
-            <h1>Perbarui Informasi Ternak</h1>
-            <p>
-              Ubah data ternak yang sudah Anda tambahkan sebelumnya di SIPERA.
-            </p>
-          </div>
-        </section>
+      <section className="app-page-header">
+
+        <span className="app-page-label">
+          Dashboard Penjual
+        </span>
+
+        <h1>Edit Data Ternak</h1>
+
+        <p>
+          Ubah data ternak yang sudah Anda tambahkan sebelumnya di SIPERA Toraja.
+        </p>
+
+      </section>
 
         <section className="edit-ternak-card">
           <form className="edit-ternak-form" onSubmit={handleSubmit}>

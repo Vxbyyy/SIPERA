@@ -39,6 +39,7 @@ describe("Unit Test Modul Chat", () => {
       });
 
     tokenPembeli = loginPembeli.body.token;
+    console.log("LOGIN PEMBELI:", loginPembeli.body);
 
     const loginPenjual = await request(app)
       .post("/api/auth/login")
@@ -48,6 +49,7 @@ describe("Unit Test Modul Chat", () => {
       });
 
     tokenPenjual = loginPenjual.body.token;
+    console.log("LOGIN PENJUAL:", loginPenjual.body);
     penjualId = loginPenjual.body.user.id;
 
   });

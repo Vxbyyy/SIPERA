@@ -1,120 +1,5 @@
-.buyer-transaction-page {
-  min-height: 100vh;
-  background: #fafafa;
-  font-family: Arial, sans-serif;
-  color: #2e2e2e;
-}
-
-/* NAVBAR */
-.buyer-transaction-navbar {
-  height: 86px;
-  background: white;
-  border-bottom: 1px solid #e8e8e8;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 42px;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
-
-.buyer-transaction-logo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.buyer-transaction-logo-box {
-  width: 50px;
-  height: 50px;
-  background: #7f461b;
-  color: white;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 800;
-  font-size: 24px;
-}
-
-.buyer-transaction-logo h2 {
-  margin: 0;
-  font-size: 26px;
-}
-
 .buyer-transaction-logo span {
   color: #7f461b;
-}
-
-.buyer-transaction-nav-links {
-  display: flex;
-  gap: 14px;
-  align-items: center;
-}
-
-.buyer-transaction-nav-links a {
-  text-decoration: none;
-  color: #3d332d;
-  font-size: 18px;
-  font-weight: 700;
-  padding: 12px 22px;
-  border-radius: 999px;
-  transition: 0.25s;
-}
-
-.buyer-transaction-nav-links a:hover,
-.buyer-transaction-nav-links a.active {
-  background: #7f461b;
-  color: white;
-}
-
-.buyer-transaction-user {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  border-left: 1px solid #e4ded8;
-  padding-left: 28px;
-}
-
-.buyer-transaction-user div {
-  display: flex;
-  flex-direction: column;
-  text-align: right;
-}
-
-.buyer-transaction-user span {
-  color: #7f6d61;
-  font-size: 14px;
-}
-
-.buyer-transaction-user button {
-  border: none;
-  background: transparent;
-  color: #7f461b;
-  font-size: 28px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-/* MAIN */
-.buyer-transaction-main {
-  padding: 60px 48px;
-}
-
-.buyer-transaction-header {
-  margin-bottom: 40px;
-}
-
-.buyer-transaction-header h1 {
-  font-size: 44px;
-  margin: 0 0 10px;
-  color: #171312;
-}
-
-.buyer-transaction-header p {
-  font-size: 18px;
-  color: #7f6d61;
 }
 
 .buyer-transaction-stats {
@@ -264,32 +149,9 @@
 }
 
 @media (max-width: 900px) {
-  .buyer-transaction-navbar {
-    height: auto;
-    padding: 20px;
-    flex-direction: column;
-    gap: 18px;
-  }
-
-  .buyer-transaction-nav-links {
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .buyer-transaction-user {
-    border-left: none;
-    padding-left: 0;
-  }
-
-  .buyer-transaction-main {
-    padding: 35px 20px;
-  }
-
   .buyer-transaction-stats {
     grid-template-columns: 1fr;
+    margin-top:30px;
   }
 
-  .buyer-transaction-header h1 {
-    font-size: 34px;
-  }
 }

@@ -1,54 +1,160 @@
-import { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import "../../styles/pembeli/ProfilPembeli.css";
+import logoSipera from "../../assets/logo-sipera.jpeg";
+import Footer from "../umum/Footer";
+import api from "../../api/axiosConfig";
+import useAuthStore from "../../store/authStore";
 
 function ProfilPembeli() {
   const navigate = useNavigate();
-  const loggedInUser = JSON.parse(localStorage.getItem("user"));
+const loggedInUser =
+useAuthStore(
+(state) => state.user
+);
+const setUser =
+useAuthStore(
+(state) => state.setUser
+);
+const logout =
+useAuthStore(
+(state) => state.logout
+);
   const [isEditing, setIsEditing] = useState(false);
+const handleLogout = () => {
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    localStorage.removeItem("role");
-    navigate("/login");
-  };
+localStorage.removeItem("token");
+
+logout();
+
+navigate("/login");
+};
+
+const [formData, setFormData] = useState({
+  nama: "",
+  noTelepon: "",
+  alamat: "",
+});
+useEffect(() => {
+
+  if (loggedInUser) {
+
+    setFormData({
+      nama: loggedInUser.nama || "",
+      noTelepon: loggedInUser.noTelepon || "",
+      alamat: loggedInUser.alamat || "",
+    });
+
+  }
+
+}, [loggedInUser]);
+
+  const handleChange = (e) => {
+  setFormData({
+    ...formData,
+    [e.target.name]: e.target.value,
+  });
+};
+
+const handleSaveProfile = async () => {
+  try {
+    const response = await api.put(
+      "/api/auth/profile",
+      {
+        nama: formData.nama,
+        noTelepon: formData.noTelepon,
+        alamat: formData.alamat,
+      }
+    );
+
+    const updatedUser = response.data.user;
+
+localStorage.setItem(
+  "user",
+  JSON.stringify(updatedUser)
+);
+
+setUser(updatedUser);
+
+    alert("Profil berhasil diperbarui");
+
+    setIsEditing(false);
+
+  } catch (error) {
+    console.error(error);
+
+    alert(
+      error.response?.data?.message ||
+      "Gagal memperbarui profil"
+    );
+  }
+};
 
   return (
     <div className="buyer-profile-page">
-      <nav className="buyer-profile-navbar">
-        <div className="buyer-profile-logo">
-          <div className="buyer-profile-logo-box">S</div>
-          <h2>
-            SIPERA <span>TORAJA</span>
-          </h2>
-        </div>
+      <nav className="app-navbar">
+        <div className="app-logo">
+        <img
+          src={logoSipera}
+          alt="SIPERA Toraja"
+          className="app-logo-image"
+        />
 
-        <div className="buyer-profile-nav-links">
-          <NavLink to="/pembeli" end>
-            Beranda
-          </NavLink>
-          <NavLink to="/pembeli/transaksi">Transaksi</NavLink>
-          <NavLink to="/pembeli/chat">Chat</NavLink>
-          <NavLink to="/pembeli/profil">Profil</NavLink>
-        </div>
+        <h2>
+          SIPERA <span>TORAJA</span>
+        </h2>
+      </div>
 
-        <div className="buyer-profile-user">
+        <div className="app-nav-links">
+        <NavLink to="/pembeli" end>
+          Beranda
+        </NavLink>
+
+        <NavLink to="/pembeli/transaksi">
+          Transaksi
+        </NavLink>
+
+        <NavLink to="/pembeli/chat">
+          Chat
+        </NavLink>
+
+        <NavLink to="/pembeli/lapor-masalah">
+          Lapor Masalah
+        </NavLink>
+
+        <NavLink to="/pembeli/profil">
+          Profil
+        </NavLink>
+      </div>
+
+        <div className="app-user">
           <div>
             <strong>{loggedInUser?.nama || "Pembeli"}</strong>
             <span>Buyer</span>
           </div>
-          <button type="button" onClick={handleLogout}>
-            ↪
-          </button>
+        <button
+          type="button"
+          className="app-logout"
+          onClick={handleLogout}
+        >
+          ↪
+        </button>
         </div>
       </nav>
 
-      <main className="buyer-profile-main">
-        <section className="buyer-profile-header">
-          <h1>Profil Pembeli</h1>
-          <p>Kelola informasi akun pembeli SIPERA Anda.</p>
-        </section>
+      <main className="app-main">
+
+<section className="app-page-header">
+        <span className="app-page-label">
+          Dashboard Pembeli
+        </span>
+
+        <h1>Profil Pembeli</h1>
+
+        <p>
+          Kelola informasi akun pembeli SIPERA Toraja.
+        </p>
+      </section>
 
         <section className="buyer-profile-layout">
           <div className="buyer-profile-card">
@@ -104,7 +210,9 @@ function ProfilPembeli() {
           <label>Nama Lengkap</label>
           <input
             type="text"
-            defaultValue={loggedInUser?.nama || ""}
+            name="nama"
+            value={formData.nama}
+            onChange={handleChange}
           />
         </div>
 
@@ -119,23 +227,29 @@ function ProfilPembeli() {
 
         <div className="buyer-profile-group">
           <label>Nomor Telepon</label>
-          <input type="text" />
+          <input
+            type="text"
+            name="noTelepon"
+            value={formData.noTelepon}
+            onChange={handleChange}
+          />
         </div>
 
-        <div className="buyer-profile-group">
-          <label>Kebutuhan Ternak</label>
-          <input type="text" />
-        </div>
       </div>
 
       <div className="buyer-profile-group">
         <label>Alamat Lengkap</label>
-        <textarea></textarea>
+        <textarea
+          name="alamat"
+          value={formData.alamat}
+          onChange={handleChange}
+        />
       </div>
 
       <button
         type="button"
         className="buyer-profile-save-btn"
+        onClick={handleSaveProfile}
       >
         Simpan Perubahan
       </button>
@@ -152,6 +266,8 @@ function ProfilPembeli() {
 </div>
         </section>
       </main>
+      <Footer />
+
     </div>
   );
 }

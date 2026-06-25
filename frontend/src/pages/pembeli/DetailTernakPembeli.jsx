@@ -2,6 +2,7 @@ import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import api from "../../api/axiosConfig";
 import "../../styles/pembeli/DetailTernakPembeli.css";
+import logoSipera from "../../assets/logo-sipera.jpeg";
 
 function DetailTernakPembeli() {
   const { id } = useParams();
@@ -27,7 +28,7 @@ function DetailTernakPembeli() {
       return foto;
     }
 
-    return `http://localhost:5000/uploads/${foto}`;
+    return `${import.meta.env.VITE_API_URL}/uploads/${foto}`;
   };
 
   const fetchDetailTernak = async () => {
@@ -107,37 +108,63 @@ function DetailTernakPembeli() {
 
   return (
     <div className="buyer-detail-page">
-      <nav className="buyer-detail-navbar">
-        <div className="buyer-detail-logo">
-          <div className="buyer-detail-logo-box">S</div>
-          <h2>
-            SIPERA <span>TORAJA</span>
-          </h2>
-        </div>
+      <nav className="app-navbar">
 
-        <div className="buyer-detail-nav-links">
-          <NavLink to="/pembeli" end>
-            Beranda
-          </NavLink>
+  <div className="app-logo">
+    <img
+      src={logoSipera}
+      alt="SIPERA Toraja"
+      className="app-logo-image"
+    />
 
-          <NavLink to="/pembeli/transaksi">Transaksi</NavLink>
+    <h2>
+      SIPERA <span>TORAJA</span>
+    </h2>
+  </div>
 
-          <NavLink to="/pembeli/chat">Chat</NavLink>
+  <div className="app-nav-links">
+    <NavLink to="/pembeli" end>
+      Beranda
+    </NavLink>
 
-          <NavLink to="/pembeli/profil">Profil</NavLink>
-        </div>
+    <NavLink to="/pembeli/transaksi">
+      Transaksi
+    </NavLink>
 
-        <div className="buyer-detail-user">
-          <div>
-            <strong>{loggedInUser?.nama || "Pembeli"}</strong>
-            <span>Buyer</span>
-          </div>
+    <NavLink to="/pembeli/chat">
+      Chat
+    </NavLink>
 
-          <button type="button" onClick={handleLogout}>
-            ↪
-          </button>
-        </div>
-      </nav>
+        <NavLink
+          to="/pembeli/lapor-masalah"
+          className={({ isActive }) =>
+            isActive ? "active" : ""
+          }
+        >
+          Lapor Masalah
+        </NavLink>
+
+    <NavLink to="/pembeli/profil">
+      Profil
+    </NavLink>
+  </div>
+
+  <div className="app-user">
+    <div>
+      <strong>{loggedInUser?.nama || "Pembeli"}</strong>
+      <span>Buyer</span>
+    </div>
+
+    <button
+      type="button"
+      className="app-logout"
+      onClick={handleLogout}
+    >
+      ↪
+    </button>
+  </div>
+
+</nav>
 
       <main className="buyer-detail-main">
         <button

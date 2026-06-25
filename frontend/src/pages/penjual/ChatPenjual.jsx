@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import api from "../../api/axiosConfig";
 import "../../styles/penjual/ChatPenjual.css";
+import logoSipera from "../../assets/logo-sipera.jpeg";
+import Footer from "../umum/Footer";
 
 function ChatPenjual() {
   const navigate = useNavigate();
@@ -11,6 +13,7 @@ function ChatPenjual() {
   const [activeUser, setActiveUser] = useState(null);
   const [messages, setMessages] = useState([]);
   const [messageInput, setMessageInput] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
 
   const fetchConversations = async () => {
     try {
@@ -75,49 +78,99 @@ function ChatPenjual() {
     return () => clearInterval(interval);
   }, [activeUser]);
 
+  const filteredConversations = conversations.filter((chat) =>
+  chat.nama.toLowerCase().includes(searchTerm.toLowerCase())
+  );
   return (
     <div className="seller-chat-page">
-      <nav className="seller-chat-navbar">
-        <div className="seller-chat-logo">
-          <div className="seller-chat-logo-box">S</div>
-          <h2>
-            SIPERA <span>TORAJA</span>
-          </h2>
-        </div>
+      <nav className="app-navbar">
+      <div className="app-logo">
+      <img
+        src={logoSipera}
+        alt="SIPERA Toraja"
+        className="app-logo-image"
+      />
 
-        <div className="seller-chat-nav-links">
-          <NavLink to="/penjual" end>
-            Beranda
-          </NavLink>
-          <NavLink to="/penjual/riwayat-ternak">Kelola Jualan</NavLink>
-          <NavLink to="/penjual/pesanan">Pesanan</NavLink>
-          <NavLink to="/penjual/chat">Chat</NavLink>
-          <NavLink to="/penjual/profil">Profil</NavLink>
-        </div>
+      <h2>
+        SIPERA <span>TORAJA</span>
+      </h2>
+    </div>
 
-        <div className="seller-chat-user">
-          <div>
-            <strong>{loggedInUser?.nama || "Penjual"}</strong>
-            <span>Seller</span>
-          </div>
-          <button type="button" onClick={handleLogout}>
-            ↪
-          </button>
-        </div>
-      </nav>
+  <div className="app-nav-links">
+    <NavLink to="/penjual" end>
+      Beranda
+    </NavLink>
 
-      <main className="seller-chat-main">
-        <section className="seller-chat-header">
-          <h1>Chat Pembeli</h1>
-          <p>Balas pertanyaan pembeli terkait ternak yang Anda jual.</p>
-        </section>
+    <NavLink to="/penjual/riwayat-ternak">
+      Riwayat Ternak
+    </NavLink>
+
+    <NavLink to="/penjual/pesanan">
+      Pesanan
+    </NavLink>
+
+    <NavLink to="/penjual/chat">
+      Chat
+    </NavLink>
+
+    <NavLink to="/penjual/lapor-masalah">
+  Laporan
+</NavLink>
+
+    <NavLink to="/penjual/profil">
+      Profil
+    </NavLink>
+  </div>
+
+  <div className="app-user">
+    <div>
+      <strong>{loggedInUser?.nama || "Penjual"}</strong>
+      <span>Seller</span>
+    </div>
+
+    <button
+      type="button"
+      className="app-logout"
+      onClick={handleLogout}
+      title="Logout"
+    >
+      ↪
+    </button>
+  </div>
+</nav>
+
+      <main className="app-main seller-chat-main">
+      <section className="app-page-header">
+        <span className="app-page-label">
+          Dashboard Penjual
+        </span>
+
+        <h1>Chat Pembeli</h1>
+
+        <p>
+          Balas pertanyaan pembeli terkait ternak yang Anda jual.
+        </p>
+      </section>
 
         <section className="chat-layout">
-          <div className="chat-list-card">
-            <h2>Daftar Chat</h2>
 
-            {conversations.length > 0 ? (
-              conversations.map((chat) => (
+        <div className="chat-list-card">
+
+          <h2>Daftar Chat</h2>
+
+          <div className="chat-search">
+            <i className="fas fa-search"></i>
+
+            <input
+              type="text"
+              placeholder="Cari"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+
+             {conversations.length > 0 ? (
+              filteredConversations.map((chat) => (
                 <button
                   key={chat.userId}
                   type="button"
@@ -126,20 +179,28 @@ function ChatPenjual() {
                   }`}
                   onClick={() => setActiveUser(chat)}
                 >
-                  <div className="chat-avatar">{chat.nama.charAt(0)}</div>
+                  <div className="chat-avatar">
+                    {chat.nama.charAt(0)}
+                  </div>
+
                   <div>
                     <h4>{chat.nama}</h4>
                     <p>{chat.lastMessage}</p>
                   </div>
-                  <span>{chat.role}</span>
-                </button>
-              ))
-            ) : (
-              <p className="chat-empty">Belum ada chat masuk.</p>
-            )}
-          </div>
+                   <span>{chat.role}</span>
+                    </button>
+                  ))
+                ) : (
+                  <div className="chat-empty">
+                    <i className="fas fa-comments"></i>
+                    <h3>Belum Ada Percakapan</h3>
+                    <p>Chat dari pembeli akan muncul di sini.</p>
+                  </div>
+                )}
 
-          <div className="chat-room-card">
+              </div>
+
+              <div className="chat-room-card">
             {activeUser ? (
               <>
                 <div className="chat-room-header">
@@ -182,14 +243,16 @@ function ChatPenjual() {
                   </button>
                 </div>
               </>
-            ) : (
+                        ) : (
               <div className="chat-empty-room">
                 Pilih chat untuk mulai percakapan.
-              </div>
+                </div>
             )}
           </div>
         </section>
-      </main>
+           </main>
+
+<Footer />
     </div>
   );
 }

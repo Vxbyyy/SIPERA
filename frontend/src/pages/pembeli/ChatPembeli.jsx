@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { Link, NavLink,useLocation,useNavigate } from "react-router-dom";
 import api from "../../api/axiosConfig";
 import "../../styles/pembeli/ChatPembeli.css";
+import logoSipera from "../../assets/logo-sipera.jpeg";
+import Footer from "../umum/Footer";
 
 function ChatPembeli() {
   const navigate = useNavigate();
@@ -141,42 +143,95 @@ function ChatPembeli() {
 
   return (
     <div className="buyer-chat-page">
-      <nav className="buyer-chat-navbar">
-        <div className="buyer-chat-logo">
-          <div className="buyer-chat-logo-box">S</div>
+      <nav className="app-navbar">
+        <div className="app-logo">
+          <img
+            src={logoSipera}
+            alt="SIPERA Toraja"
+            className="app-logo-image"
+          />
+
           <h2>
             SIPERA <span>TORAJA</span>
           </h2>
         </div>
 
-        <div className="buyer-chat-nav-links">
-          <NavLink to="/pembeli" end>
-            Beranda
-          </NavLink>
+        <div className="app-nav-links">
+        <NavLink
+          to="/pembeli"
+          end
+          className={({ isActive }) =>
+            isActive ? "active" : ""
+          }
+        >
+          Beranda
+        </NavLink>
 
-          <NavLink to="/pembeli/transaksi">Transaksi</NavLink>
+        <NavLink
+          to="/pembeli/transaksi"
+          className={({ isActive }) =>
+            isActive ? "active" : ""
+          }
+        >
+          Transaksi
+        </NavLink>
 
-          <NavLink to="/pembeli/chat">Chat</NavLink>
+        <NavLink
+          to="/pembeli/chat"
+          className={({ isActive }) =>
+            isActive ? "active" : ""
+          }
+        >
+          Chat
+        </NavLink>
 
-          <NavLink to="/pembeli/profil">Profil</NavLink>
-        </div>
+        <NavLink
+          to="/pembeli/lapor-masalah"
+          className={({ isActive }) =>
+            isActive ? "active" : ""
+          }
+        >
+          Lapor Masalah
+        </NavLink>
 
-        <div className="buyer-chat-user">
+        <NavLink
+          to="/pembeli/profil"
+          className={({ isActive }) =>
+            isActive ? "active" : ""
+          }
+        >
+          Profil
+        </NavLink>
+      </div>
+
+        <div className="app-user">
           <div>
             <strong>{loggedInUser?.nama || "Pembeli"}</strong>
             <span>Buyer</span>
           </div>
 
-          <button type="button" onClick={handleLogout}>
+          <button
+            type="button"
+            className="app-logout"
+            onClick={handleLogout}
+          >
             ↪
           </button>
         </div>
       </nav>
 
-      <main className="buyer-chat-main">
-        <section className="buyer-chat-header">
+     <main className="app-main">
+
+    <section className="app-page-header">
+          <span className="app-page-label">
+            Dashboard Pembeli
+          </span>
+
           <h1>Chat Penjual</h1>
-          <p>Diskusikan detail ternak, harga, dan lokasi dengan penjual.</p>
+
+          <p>
+            Diskusikan detail ternak, harga, dan lokasi dengan penjual.
+          </p>
         </section>
 
         <section className="buyer-chat-layout">
@@ -313,6 +368,9 @@ function ChatPembeli() {
           </div>
         </section>
       </main>
+
+      <Footer />
+
     </div>
   );
 }

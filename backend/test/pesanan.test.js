@@ -62,7 +62,8 @@ describe("Unit Test Modul Pesanan", () => {
         lokasi: "Toraja",
         deskripsi: "Testing"
       });
-
+    console.log("TERNAK RESPONSE:", ternak.body);
+    expect(ternak.statusCode).toBe(201);
     ternakId = ternak.body.data.id;
 
   });
